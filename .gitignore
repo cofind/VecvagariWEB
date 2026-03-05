@@ -18,3 +18,6 @@ error_log
 # Node (if any build tools)
 node_modules/
 wp-content/backup-migration-FRo54bVm26/
+
+# Plugins — managed via WP admin, not tracked in git (LRM-109)
+wp-content/plugins/

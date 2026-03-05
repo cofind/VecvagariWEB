@@ -74,8 +74,8 @@ add_action( 'wp_head', function() {
 //   - Widget 6bcfdaa: Sakumlapa.png image alt set to "Vecvagari M mežizstrādes komanda"
 
 // LRM-87 / LRM-105: Force custom PHP templates for pages that need them.
-// Hello Elementor uses index.php for all pages, bypassing WP template hierarchy.
-// Priority 99 ensures this runs after Elementor Pro's template_include hook.
+// LRM-109: Elementor and Elementor Pro removed — template_include filter still
+// required because hello-elementor theme routes all pages through index.php.
 add_filter( 'template_include', function( $template ) {
     $page_templates = [
         'kontakti'                               => 'page-kontakti.php',
