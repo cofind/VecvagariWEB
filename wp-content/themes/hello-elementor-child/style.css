@@ -631,3 +631,289 @@ img,
         max-width: 320px;
     }
 }
+
+/* ============================================================
+   LRM-107: Service page template (meza-ipasumu, cirsmu, par-mums)
+   ============================================================ */
+
+/* Shared inner container */
+.vv-sp-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* ── Hero ── */
+.vv-sp-hero {
+    background-color: #1a3320;
+    padding: 64px 0 52px;
+}
+
+.vv-sp-h1 {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 16px 0;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+}
+
+.vv-sp-subtitle {
+    font-size: clamp(16px, 2vw, 20px);
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0;
+    max-width: 640px;
+    line-height: 1.5;
+}
+
+/* ── Body section (2-col: text + image) ── */
+.vv-sp-body {
+    background-color: #ffffff;
+    padding: 72px 0;
+    font-family: 'Inter', 'Montserrat', sans-serif;
+}
+
+.vv-sp-body .vv-sp-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+}
+
+.vv-sp-text h2 {
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-weight: 700;
+    color: #1a3320;
+    margin: 0 0 24px 0;
+    line-height: 1.25;
+}
+
+.vv-sp-text p {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #2c2c2c;
+    margin: 0 0 20px 0;
+}
+
+.vv-sp-text p:last-child {
+    margin-bottom: 0;
+}
+
+.vv-sp-media {
+    border-radius: 4px;
+    overflow: hidden;
+    min-height: 360px;
+    background: linear-gradient(135deg, #1a3320 0%, #3a6b3e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vv-sp-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.vv-sp-media-placeholder {
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 13px;
+    text-align: center;
+    padding: 24px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ── Process steps ── */
+.vv-sp-process {
+    background-color: #e8f0e8;
+    padding: 72px 0;
+}
+
+.vv-sp-process-title {
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 700;
+    color: #1a3320;
+    text-align: center;
+    margin: 0 0 48px 0;
+    font-family: 'Inter', 'Montserrat', sans-serif;
+}
+
+.vv-sp-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.vv-sp-step {
+    background-color: #ffffff;
+    border-radius: 4px;
+    padding: 32px 28px;
+}
+
+.vv-sp-step__num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #1a3320;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 50%;
+    margin-bottom: 16px;
+}
+
+.vv-sp-step__title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a3320;
+    margin: 0 0 10px 0;
+    line-height: 1.3;
+    font-family: 'Inter', 'Montserrat', sans-serif;
+}
+
+.vv-sp-step__desc {
+    font-size: 14px;
+    color: #555555;
+    margin: 0;
+    line-height: 1.65;
+}
+
+/* ── Values section (par mums) ── */
+.vv-sp-values {
+    background-color: #f5f5f2;
+    padding: 72px 0;
+}
+
+.vv-sp-values-title {
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 700;
+    color: #1a3320;
+    margin: 0 0 40px 0;
+    font-family: 'Inter', 'Montserrat', sans-serif;
+}
+
+.vv-sp-values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.vv-sp-value {
+    padding: 28px 24px;
+    background-color: #ffffff;
+    border-left: 4px solid #3a6b3e;
+    border-radius: 0 4px 4px 0;
+}
+
+.vv-sp-value__title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a3320;
+    margin: 0 0 10px 0;
+    font-family: 'Inter', 'Montserrat', sans-serif;
+}
+
+.vv-sp-value__text {
+    font-size: 14px;
+    color: #555555;
+    margin: 0;
+    line-height: 1.65;
+}
+
+/* ── Service links section (par mums) ── */
+.vv-sp-services {
+    background-color: #1a3320;
+    padding: 64px 0;
+    text-align: center;
+}
+
+.vv-sp-services-title {
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 32px 0;
+    font-family: 'Inter', 'Montserrat', sans-serif;
+}
+
+.vv-sp-services-links {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.vv-sp-service-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 12px 24px;
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.vv-sp-service-link:hover {
+    border-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+/* ── Tablet (≤ 900px) ── */
+@media (max-width: 900px) {
+    .vv-sp-body .vv-sp-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .vv-sp-steps {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .vv-sp-values-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+}
+
+/* ── Mobile (≤ 600px) ── */
+@media (max-width: 600px) {
+    .vv-sp-hero {
+        padding: 40px 0 36px;
+    }
+
+    .vv-sp-body,
+    .vv-sp-process,
+    .vv-sp-values {
+        padding: 48px 0;
+    }
+
+    .vv-sp-process-title,
+    .vv-sp-values-title {
+        margin-bottom: 32px;
+    }
+
+    .vv-sp-values-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .vv-sp-services-links {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .vv-sp-service-link {
+        width: 100%;
+        max-width: 320px;
+        justify-content: center;
+    }
+}
