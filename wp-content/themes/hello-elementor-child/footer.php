@@ -102,7 +102,7 @@ if ( is_front_page() ) : ?>
 				<h4 class="vv-footer-heading">KONTAKTI</h4>
 				<address class="vv-footer-address">
 					<p>Dzirnavu 13, Saldus, LV-3801</p>
-					<p><a href="mailto:info@vecvagari.lv">info@vecvagari.lv</a></p>
+					<p><a href="mailto:info@vecvagari.com">info@vecvagari.com</a></p>
 					<p>
 						<a href="https://www.google.com/maps/search/Dzirnavu+13,+Saldus,+LV-3801" target="_blank" rel="noopener noreferrer" class="vv-maps-link">
 							Skatīt kart&#275; &rarr;

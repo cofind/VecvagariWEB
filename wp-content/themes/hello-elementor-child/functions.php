@@ -37,7 +37,7 @@ add_action( 'wp_head', function() {
         'name'        => 'SIA Vecvagari M',
         'url'         => home_url( '/' ),
         'telephone'   => '+371 25590827',
-        'email'       => 'info@vecvagari.lv',
+        'email'       => 'info@vecvagari.com',
         'description' => 'Mežizstrādes uzņēmums Kurzemē un Zemgalē. Pērkam mežus, cirsmas un sortimentus. Darbojamies kopš 2005. gada.',
         'foundingDate' => '2005',
         'address'     => [

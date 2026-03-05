@@ -57,7 +57,7 @@ get_header();
 								<polyline points="22,6 12,13 2,6"/>
 							</svg>
 						</span>
-						<a href="mailto:info@vecvagari.lv" class="vv-contact-link">info@vecvagari.lv</a>
+						<a href="mailto:info@vecvagari.com" class="vv-contact-link">info@vecvagari.com</a>
 					</li>
 
 					<li class="vv-contact-item vv-contact-phones">
