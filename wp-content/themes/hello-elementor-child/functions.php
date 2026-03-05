@@ -12,11 +12,11 @@ add_action( 'wp_enqueue_scripts', function() {
 // LRM-88: Inject a visually hidden H1 for service pages where Elementor uses H2.
 // These pages lack a heading widget set to H1; the hidden H1 provides the semantic
 // signal for search engines without disrupting the visual design.
+// LRM-105: Removed page 618 (mežizstrādes) — now has a real H1 in the PHP template.
 add_action( 'wp_body_open', function() {
     $page_h1s = [
         529 => 'Cirsmu un sortimentu pirkšana',
         596 => 'Meža īpašumu pirkšana',
-        618 => 'Mežizstrādes pakalpojumi Kurzemē',
     ];
     $post_id = get_queried_object_id();
     if ( isset( $page_h1s[ $post_id ] ) ) {
@@ -67,14 +67,24 @@ add_action( 'wp_head', function() {
     echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
 }, 99 );
 
-// LRM-87: Force custom page template for Kontakti page.
+// LRM-87 / LRM-105: Force custom PHP templates for pages that need them.
 // Hello Elementor uses index.php for all pages, bypassing WP template hierarchy.
 // Priority 99 ensures this runs after Elementor Pro's template_include hook.
 add_filter( 'template_include', function( $template ) {
-    if ( is_page( 'kontakti' ) ) {
-        $custom = get_stylesheet_directory() . '/page-kontakti.php';
-        if ( file_exists( $custom ) ) {
-            return $custom;
+    $page_templates = [
+        'kontakti'                               => 'page-kontakti.php',
+        'mezizstrades-pakalpojuma-sniegsana'     => 'page-mezizstrades-pakalpojumi.php',
+        'pieteikuma-forma'                       => 'page-pieteikuma-forma.php',
+        'meza-ipasumu-pirksana'                  => 'page-meza-ipasumu-pirksana.php',
+        'cirsmu-un-sortimentu-pie-cela-pirksana' => 'page-cirsmu-un-sortimentu-pirksana.php',
+        'par-mums'                               => 'page-par-mums.php',
+    ];
+    foreach ( $page_templates as $slug => $file ) {
+        if ( is_page( $slug ) ) {
+            $custom = get_stylesheet_directory() . '/' . $file;
+            if ( file_exists( $custom ) ) {
+                return $custom;
+            }
         }
     }
     return $template;

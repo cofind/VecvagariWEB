@@ -1,8 +1,8 @@
 <?php
 /**
- * LRM-103: Mežizstrādes pakalpojumi — service page template.
+ * LRM-105: Mežizstrādes pakalpojumi — expanded content, feature grid, Tehnika section.
  *
- * Loaded automatically for the page with slug "mezizstrades-pakalpojumi".
+ * Loaded via template_include filter for slug "mezizstrades-pakalpojuma-sniegsana".
  *
  * @package HelloElementor Child
  */
@@ -52,30 +52,63 @@ get_header();
 		</div>
 	</section>
 
-	<!-- ── Process steps ── -->
+	<!-- ── Ko mēs piedāvājam (feature grid) ── -->
 	<section class="vv-sp-process">
 		<div class="vv-sp-inner">
-			<h2 class="vv-sp-process-title">K&#257; notiek sadarbība?</h2>
-			<div class="vv-sp-steps">
+			<h2 class="vv-sp-process-title">Ko m&#275;s pied&#257;v&#257;jam</h2>
+			<div class="vv-miz-features">
 
-				<div class="vv-sp-step">
-					<div class="vv-sp-step__num">1</div>
-					<h3 class="vv-sp-step__title">Pieteikums un apskate</h3>
-					<p class="vv-sp-step__desc">Sazinieties ar mums un pastāstiet par darba apjomu. M&#363;su specialists izbrauc uz vietu un sagatavo izmaksu tāmi bez maksas.</p>
+				<div class="vv-miz-feature">
+					<div class="vv-miz-feature__icon" aria-hidden="true">&#127794;</div>
+					<h3 class="vv-miz-feature__title">Galven&#257;s cirtes</h3>
+					<p class="vv-miz-feature__desc">Pilna cikla galveno cirsmu izstr&#257;de ar moderniem harvesteru komplektiem.</p>
 				</div>
 
-				<div class="vv-sp-step">
-					<div class="vv-sp-step__num">2</div>
-					<h3 class="vv-sp-step__title">L&#299;gums un sagatavo&#353;ana</h3>
-					<p class="vv-sp-step__desc">Noslēdzam l&#299;gumu, vienojas par laika grafiku. M&#363;su komanda sagatavo cirsmu darbam &#8212; izv&#275;rtē ce&#316;u kvalit&#257;ti un pieejam&#299;bu.</p>
+				<div class="vv-miz-feature">
+					<div class="vv-miz-feature__icon" aria-hidden="true">&#127807;</div>
+					<h3 class="vv-miz-feature__title">Kr&#257;jas kopšana</h3>
+					<p class="vv-miz-feature__desc">Me&#382;a kr&#257;jas kopšanas cirtes &#8212; saudzīgi un atbilsto&#353;i me&#382;saimniec&#299;bas normat&#299;viem.</p>
 				</div>
 
-				<div class="vv-sp-step">
-					<div class="vv-sp-step__num">3</div>
-					<h3 class="vv-sp-step__title">Izstr&#257;de un nodošana</h3>
-					<p class="vv-sp-step__desc">Izstr&#257;d&#257;jam cirsmu pēc grafika, sakopjam darba laukumu. Pēc darbu pabeig&#353;anas nodod&#257;m atskaiti un sagatavojam r&#275;&#311;inu.</p>
+				<div class="vv-miz-feature">
+					<div class="vv-miz-feature__icon" aria-hidden="true">&#128666;</div>
+					<h3 class="vv-miz-feature__title">Kokmateri&#257;lu izve&#353;ana</h3>
+					<p class="vv-miz-feature__desc">Sortimentu transportēšana no cirsmas l&#299;dz sagatavošanas vai p&#257;rdošanas vietai.</p>
 				</div>
 
+				<div class="vv-miz-feature">
+					<div class="vv-miz-feature__icon" aria-hidden="true">&#128663;</div>
+					<h3 class="vv-miz-feature__title">Buldozera pakalpojumi</h3>
+					<p class="vv-miz-feature__desc">Ceļu sagatavošana, grāvju rakšana un laukumu izlīdzināšana ar buldozeru.</p>
+				</div>
+
+				<div class="vv-miz-feature">
+					<div class="vv-miz-feature__icon" aria-hidden="true">&#128295;</div>
+					<h3 class="vv-miz-feature__title">Treilera pakalpojumi</h3>
+					<p class="vv-miz-feature__desc">Tehnikas un koka transportēšana ar treileriem dažāda veida krovas piegādei.</p>
+				</div>
+
+				<div class="vv-miz-feature">
+					<div class="vv-miz-feature__icon" aria-hidden="true">&#128205;</div>
+					<h3 class="vv-miz-feature__title">Kurzeme &amp; Zemgale</h3>
+					<p class="vv-miz-feature__desc">Darbojamies vis&#257; Kurzemē un Zemgalē &#8212; gan privātos, gan valsts me&#382;os.</p>
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+	<!-- ── Tehnika un ilgtspēja ── -->
+	<section class="vv-sp-body vv-miz-tech">
+		<div class="vv-sp-inner vv-miz-tech__inner">
+			<div class="vv-sp-text">
+				<h2>Tehnika un ilgtsp&#275;ja</h2>
+				<p>M&#363;su tehnikas parks ietver maz&#257; izmēra harvesterus un fivarderu&#275;nus, kas &#316;auj str&#257;d&#257;t mazāk pieejamost&#257;s platīb&#257;s, nesabojājot augsni un ja&#363;nos ko&#311;us. Atbilsto&#353;i me&#382;saimniec&#299;bas prasīb&#257;m izmantojam zemu virsmas spiedienu tehnikas riepas un gruntss&#257;rg&#257;jo&#353;us paklājus ceļu aizsardz&#299;bai.</p>
+				<p>P&#275;c katras cirsmas izstr&#257;des sakopjam darba laukumu, aiztaisām robus un nodrošin&#257;m, ka zeme ir gatava dabisk&#257;i atjaunošan&#257;s vai me&#382;a st&#257;d&#299;šanai. Konsult&#275;jam &#299;pašniekus par labāk&#257;jiem me&#382;a atjaunošanas pas&#257;kumiem.</p>
+				<p>Sadarbojamies ar Latvijas Valsts Me&#382;iem, privātīpašniekiem un pa&#353;vald&#299;b&#257;m. Iespējama gan vienreizēja cirsmas izstr&#257;de, gan ilgtermi&#326;a l&#299;guma sadarbība.</p>
+			</div>
+			<div class="vv-sp-media">
+				<p class="vv-sp-media-placeholder">Ilustratīvs foto &#8212; me&#382;izstr&#257;des tehnika darb&#257;</p>
 			</div>
 		</div>
 	</section>

@@ -931,6 +931,68 @@ img,
 }
 
 /* ============================================================
+   LRM-105: Mežizstrādes page — feature grid + tech section
+   ============================================================ */
+
+/* 6-item feature grid (3 cols) inside light-green .vv-sp-process */
+.vv-miz-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.vv-miz-feature {
+    background-color: #ffffff;
+    border-radius: 4px;
+    padding: 28px 24px;
+}
+
+.vv-miz-feature__icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+    line-height: 1;
+}
+
+.vv-miz-feature__title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a3320;
+    margin: 0 0 8px 0;
+    font-family: 'Inter', 'Montserrat', sans-serif;
+    line-height: 1.3;
+}
+
+.vv-miz-feature__desc {
+    font-size: 14px;
+    color: #555555;
+    margin: 0;
+    line-height: 1.65;
+}
+
+/* Tech section — reuse vv-sp-body but inner needs own grid
+   so the text fills full width (no image yet) */
+.vv-miz-tech__inner {
+    grid-template-columns: 3fr 2fr !important;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+    .vv-miz-features {
+        grid-template-columns: 1fr 1fr;
+    }
+    .vv-miz-tech__inner {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .vv-miz-features {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================================
    LRM-104: Pieteikuma forma — 2-column layout + WPForms brand styling
    ============================================================ */
 
