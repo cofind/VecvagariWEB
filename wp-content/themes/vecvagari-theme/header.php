@@ -25,6 +25,12 @@
 
 		<!-- Primary navigation -->
 		<nav id="site-navigation" class="vv-nav" aria-label="<?php esc_attr_e( 'Galvenā navigācija', 'vecvagari-theme' ); ?>">
+
+			<!-- Close button (mobile drawer only) -->
+			<button class="vv-nav__close" aria-label="<?php esc_attr_e( 'Aizvērt izvēlni', 'vecvagari-theme' ); ?>" aria-controls="site-navigation">
+				<span aria-hidden="true">&times;</span>
+			</button>
+
 			<?php
 			wp_nav_menu( [
 				'theme_location' => 'primary',
