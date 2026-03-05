@@ -1,0 +1,104 @@
+/*
+Theme Name:   Hello Elementor Child
+Description:  Vecvagari M child theme — responsive overrides and custom styles.
+Template:     hello-elementor
+Version:      1.0.0
+*/
+
+/* ============================================================
+   LRM-86: Mobile responsiveness fixes
+   ============================================================ */
+
+/* 1. Prevent horizontal scroll globally
+   The main risk comes from any element with a fixed width wider
+   than the viewport (e.g. old nav margins, oversized images). */
+html,
+body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+/* 2. Make sure all Elementor sections stay within the viewport */
+.elementor-section,
+.elementor-section > .elementor-container {
+    max-width: 100%;
+}
+
+/* 3. Minimum 44 px touch targets for all buttons (WCAG 2.5.5)
+   Elementor buttons use flex, so min-height is the right lever. */
+.elementor-button {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+/* 4. Hero CTA button row — stack to single column on narrow screens.
+   Elementor inner sections collapse at the tablet breakpoint (1025 px),
+   but the two-button row should also stack on small phones. */
+@media (max-width: 480px) {
+    .elementor-inner-section .elementor-column {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .elementor-inner-section .elementor-widget-button .elementor-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* 5. Body text never smaller than 16 px on mobile.
+   LRM-85 sets 17 px globally but some legacy widgets override it. */
+@media (max-width: 767px) {
+    .elementor-widget-text-editor,
+    .elementor-widget-text-editor p,
+    .elementor-icon-box-description,
+    .elementor-widget-icon-box .elementor-icon-box-description {
+        font-size: 16px;
+        line-height: 1.65;
+    }
+}
+
+/* 6. Images never overflow their container */
+img,
+.elementor-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* 7. Service card columns — ensure they stack cleanly on mobile.
+   Elementor handles this natively, but explicit 100% width prevents
+   any gap/padding overflow on very small screens. */
+@media (max-width: 767px) {
+    .elementor-column {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Remove large section padding that can cause overflow on mobile */
+    .elementor-section.elementor-section-boxed > .elementor-container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+/* 8. Icon list inline (trust badges) — wrap on very small screens */
+@media (max-width: 480px) {
+    .elementor-icon-list--layout-inline .elementor-icon-list-items {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+}
+
+/* 9. Hero H1 — ensure readable size on mobile, never truncated */
+@media (max-width: 767px) {
+    .elementor-widget-heading h1,
+    .elementor-widget-heading .elementor-heading-title {
+        font-size: 36px !important;
+        line-height: 1.2;
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+}
