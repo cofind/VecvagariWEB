@@ -1,6 +1,9 @@
 <?php
 /**
  * LRM-112: Vecvagari M theme — core setup.
+ * LRM-111: Theme activated via WP-CLI — replaces hello-elementor-child.
+ *          Primary nav menu (ID 5 "Main Menu") auto-assigned to primary location.
+ *          Front page: static page ID 10 (slug: home). Permalinks flushed.
  *
  * @package VecvagariTheme
  */
