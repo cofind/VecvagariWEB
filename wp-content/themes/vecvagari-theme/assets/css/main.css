@@ -1,18 +1,31 @@
 /* =============================================================
    LRM-112: Vecvagari M — main stylesheet
+   LRM-117: Color system refinement + textures
    Fonts: Montserrat (headings) + Open Sans (body)
    ============================================================= */
 
 /* ── Design tokens ─────────────────────────────────────────── */
 :root {
-	--green:        #1a3320;
-	--green-mid:    #2d6a30;
-	--green-accent: #3a6b3e;
+	/* LRM-117: refined forest-green + amber palette */
+	--color-forest-deep:  #1a3310;
+	--color-forest-mid:   #2D5A1B;
+	--color-forest-light: #4A7A2E;
+	--color-amber:        #C8860A;
+	--color-amber-light:  #E8A020;
+	--color-bark:         #5C3D1E;
+	--color-cream:        #F5F0E8;
+	--color-text-dark:    #1C1C1C;
+	--color-text-muted:   #5a5a5a;
+
+	/* Legacy aliases — keeps old var() references working */
+	--green:        var(--color-forest-deep);
+	--green-mid:    var(--color-forest-mid);
+	--green-accent: var(--color-forest-light);
 	--green-light:  #e8f0e8;
-	--charcoal:     #2c2c2c;
+	--charcoal:     var(--color-text-dark);
 	--white:        #ffffff;
-	--warm-grey:    #f5f5f2;
-	--mid-grey:     #555555;
+	--warm-grey:    var(--color-cream);
+	--mid-grey:     var(--color-text-muted);
 	--border:       #e0e0dc;
 
 	--font-head: 'Montserrat', sans-serif;
@@ -21,6 +34,10 @@
 	--max-w: 1200px;
 	--pad-x: 24px;
 	--radius: 4px;
+
+	/* Shared SVG textures (base64 inline, zero external requests) */
+	--texture-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+	--texture-linen: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 20h40M20 0v40' stroke='%235C3D1E' stroke-width='0.4' opacity='0.3'/%3E%3Cpath d='M0 10h40M0 30h40M10 0v40M30 0v40' stroke='%235C3D1E' stroke-width='0.2' opacity='0.15'/%3E%3C/svg%3E");
 }
 
 /* ── Reset & base ──────────────────────────────────────────── */
@@ -420,7 +437,7 @@ ul, ol { padding-left: 1.4em; }
 	font-family: var(--font-head);
 	font-size: clamp(26px, 3.5vw, 38px);
 	font-weight: 800;
-	color: var(--white);
+	color: var(--color-amber);
 	line-height: 1;
 	margin-bottom: 6px;
 }
@@ -433,9 +450,14 @@ ul, ol { padding-left: 1.4em; }
 }
 
 /* ── About (PAR MUMS) ──────────────────────────────────────── */
+/* LRM-117: cream bg + linen texture */
 .vv-about {
-	background: var(--white);
+	background-color: var(--color-cream);
+	background-image: var(--texture-linen);
+	background-repeat: repeat;
+	background-size: 40px 40px;
 	padding: 88px 0;
+	position: relative;
 }
 
 .vv-about__inner {
@@ -478,9 +500,15 @@ ul, ol { padding-left: 1.4em; }
 }
 
 /* ── Services section ──────────────────────────────────────── */
+/* LRM-117: cream bg + linen + amber bark divider at top */
 .vv-services {
-	background: var(--warm-grey);
+	background-color: var(--color-cream);
+	background-image: var(--texture-linen);
+	background-repeat: repeat;
+	background-size: 40px 40px;
 	padding: 88px 0;
+	border-top: 2px solid transparent;
+	border-image: linear-gradient(90deg, transparent 0%, var(--color-amber) 30%, var(--color-bark) 70%, transparent 100%) 1;
 }
 
 .vv-services__inner {
@@ -503,17 +531,21 @@ ul, ol { padding-left: 1.4em; }
 	gap: 24px;
 }
 
+/* LRM-117: card with amber top border + lift hover */
 .vv-service-card {
 	background: var(--white);
-	border-radius: var(--radius);
+	border: 1px solid rgba(44, 90, 27, 0.12);
+	border-top: 4px solid var(--color-forest-mid);
+	border-radius: 8px;
 	padding: 36px 28px;
 	display: flex;
 	flex-direction: column;
+	box-shadow: 0 2px 12px rgba(0,0,0,.06);
 	transition: box-shadow .2s, transform .2s;
 }
 .vv-service-card:hover {
-	box-shadow: 0 6px 24px rgba(0,0,0,.1);
-	transform: translateY(-2px);
+	transform: translateY(-4px);
+	box-shadow: 0 8px 28px rgba(0,0,0,.12);
 }
 
 .vv-service-card__icon {
@@ -551,11 +583,23 @@ ul, ol { padding-left: 1.4em; }
 .vv-service-card__link:hover { color: var(--green); }
 
 /* ── CTA strip ─────────────────────────────────────────────── */
+/* LRM-117: noise texture on dark section */
 .vv-cta-strip {
-	background: var(--green);
+	background-color: var(--color-forest-deep);
+	background-image: var(--texture-noise);
+	background-repeat: repeat;
+	background-size: 200px 200px;
+	position: relative;
 	padding: 80px var(--pad-x);
 	text-align: center;
 	font-family: var(--font-head);
+}
+.vv-cta-strip::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: rgba(26, 51, 16, 0.88);
+	pointer-events: none;
 }
 
 .vv-cta-inner {
