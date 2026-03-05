@@ -12,6 +12,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// LRM-89: Homepage pre-footer CTA conversion strip.
+if ( is_front_page() ) : ?>
+<section class="vv-cta-strip" aria-label="Aicinājums rīkoties">
+	<div class="vv-cta-inner">
+		<h2 class="vv-cta-heading">Interesē meža īpašumu pārdošana vai mežizstrādes pakalpojums?</h2>
+		<p class="vv-cta-sub">Sazinieties ar mums &mdash; novērtēšana un konsultācija bez maksas.</p>
+		<div class="vv-cta-buttons">
+			<a href="<?php echo esc_url( home_url( '/pieteikuma-forma/' ) ); ?>" class="vv-cta-btn vv-cta-btn--primary">
+				PIETEIKT PAKALPOJUMU &rarr;
+			</a>
+			<a href="tel:+37125590827" class="vv-cta-btn vv-cta-btn--outline">
+				+371 25590827
+			</a>
+		</div>
+	</div>
+</section>
+<?php endif;
+
 // If Elementor Theme Builder has a footer template assigned, use that instead.
 if ( function_exists( 'elementor_theme_do_location' ) && elementor_theme_do_location( 'footer' ) ) {
 	wp_footer();
