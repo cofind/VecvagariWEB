@@ -1,9 +1,7 @@
 <?php
 /**
  * LRM-84: Custom 3-column footer — Brand, Navigation, Contacts + bottom bar.
- *
- * Respects Elementor Theme Builder: if a footer location is active there,
- * this file is bypassed and Elementor renders the footer instead.
+ * LRM-100: Removed Elementor Theme Builder bypass — old DB template was overriding this.
  *
  * @package HelloElementor Child
  */
@@ -30,12 +28,9 @@ if ( is_front_page() ) : ?>
 </section>
 <?php endif;
 
-// If Elementor Theme Builder has a footer template assigned, use that instead.
-if ( function_exists( 'elementor_theme_do_location' ) && elementor_theme_do_location( 'footer' ) ) {
-	wp_footer();
-	echo '</body></html>';
-	return;
-}
+// LRM-100: Always render the custom PHP footer.
+// An old Elementor Theme Builder footer template in the DB was overriding this file.
+// By not calling elementor_theme_do_location('footer') we bypass any stale DB template.
 ?>
 
 <footer id="vecvagari-footer" class="vv-footer" role="contentinfo">
