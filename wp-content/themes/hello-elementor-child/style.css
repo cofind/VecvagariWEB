@@ -931,16 +931,151 @@ img,
 }
 
 /* ============================================================
-   LRM-103: Form page content wrapper
+   LRM-104: Pieteikuma forma — 2-column layout + WPForms brand styling
    ============================================================ */
 
-.vv-form-page-content {
+/* ── Section wrapper ── */
+.vv-pf-main {
     background-color: #ffffff;
-    padding: 64px 0;
+    padding: 72px 0;
+    font-family: 'Inter', 'Montserrat', sans-serif;
 }
 
+.vv-pf-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: 64px;
+    align-items: start;
+}
+
+/* ── Shared H2 ── */
+.vv-pf-h2 {
+    font-size: clamp(20px, 2.5vw, 26px);
+    font-weight: 700;
+    color: #1a3320;
+    margin: 0 0 24px 0;
+    line-height: 1.25;
+}
+
+/* ── Left column ── */
+.vv-pf-list {
+    list-style: none;
+    margin: 0 0 32px 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.vv-pf-list li {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #2c2c2c;
+    padding-left: 20px;
+    position: relative;
+}
+
+.vv-pf-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #3a6b3e;
+    font-weight: 700;
+}
+
+/* ── Contact callout box ── */
+.vv-pf-callout {
+    background-color: #e8f0e8;
+    border-radius: 4px;
+    padding: 24px 20px;
+}
+
+.vv-pf-callout__lead {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a3320;
+    margin: 0 0 14px 0;
+}
+
+.vv-pf-callout__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    margin: 0 0 10px 0;
+    line-height: 1.4;
+}
+
+.vv-pf-callout__item:last-child {
+    margin-bottom: 0;
+}
+
+.vv-pf-callout__icon {
+    flex-shrink: 0;
+    font-style: normal;
+}
+
+.vv-pf-callout__item a {
+    color: #1a3320;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.vv-pf-callout__item a:hover {
+    color: #3a6b3e;
+}
+
+/* ── WPForms brand styling ── */
+.wpforms-form .wpforms-field input,
+.wpforms-form .wpforms-field textarea,
+.wpforms-form .wpforms-field select {
+    border: 1px solid #c5d5c5;
+    border-radius: 4px;
+    padding: 12px 14px;
+    font-size: 16px;
+    transition: border-color 0.2s;
+}
+
+.wpforms-form .wpforms-field input:focus,
+.wpforms-form .wpforms-field textarea:focus {
+    border-color: #3a6b3e;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(58, 107, 62, 0.12);
+}
+
+.wpforms-submit-container .wpforms-submit {
+    background-color: #3a6b3e !important;
+    color: #fff !important;
+    border: none;
+    padding: 14px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.2s;
+}
+
+.wpforms-submit-container .wpforms-submit:hover {
+    background-color: #1a3320 !important;
+}
+
+/* ── Tablet (≤ 900px) ── */
+@media (max-width: 900px) {
+    .vv-pf-inner {
+        grid-template-columns: 1fr;
+        gap: 48px;
+    }
+}
+
+/* ── Mobile (≤ 600px) ── */
 @media (max-width: 600px) {
-    .vv-form-page-content {
-        padding: 40px 0;
+    .vv-pf-main {
+        padding: 48px 0;
     }
 }
