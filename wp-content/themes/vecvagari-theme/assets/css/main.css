@@ -367,7 +367,7 @@ ul, ol { padding-left: 1.4em; }
 /* LRM-115: full-bleed forest hero */
 .vv-hero {
 	position: relative;
-	min-height: 100vh;
+	min-height: 80vh;
 	display: flex;
 	align-items: center;
 	background-color: #0a190a;
@@ -1895,14 +1895,14 @@ ul, ol { padding-left: 1.4em; }
 @media (max-width: 900px) {
 	/* Disable parallax on tablet/mobile — better perf, avoids iOS fixed-bg issues */
 	.vv-hero {
-		min-height: 80vh;
+		min-height: 64vh;
 		background-attachment: scroll;
 	}
 }
 
 @media (max-width: 600px) {
 	/* ── Hero ── */
-	.vv-hero { min-height: 70vh; }
+	.vv-hero { min-height: 56vh; }
 	.vv-hero__inner { padding: 60px var(--pad-x); }
 
 	/* LRM-118: stack CTA buttons vertically, full width */
