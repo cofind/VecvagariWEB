@@ -114,6 +114,22 @@
 			statNums.forEach(function (el) { statsObs.observe(el); });
 		}
 
+		// ── LRM-124: Vakances accordion toggle ───────────────────────────
+		document.querySelectorAll('.vv-vak-btn--details').forEach(function (btn) {
+			btn.addEventListener('click', function () {
+				var expanded = btn.getAttribute('aria-expanded') === 'true';
+				var targetId = btn.getAttribute('aria-controls');
+				var panel    = document.getElementById(targetId);
+				if (!panel) return;
+				btn.setAttribute('aria-expanded', String(!expanded));
+				if (expanded) {
+					panel.hidden = true;
+				} else {
+					panel.hidden = false;
+				}
+			});
+		});
+
 		// ── LRM-119: Service cards stagger scroll reveal ──────────────────
 		var cards = document.querySelectorAll('.vv-service-card');
 		if (cards.length && 'IntersectionObserver' in window) {
