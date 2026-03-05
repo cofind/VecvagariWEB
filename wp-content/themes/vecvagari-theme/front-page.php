@@ -78,6 +78,7 @@ get_header();
 					width="701"
 					height="442"
 				>
+				<!-- LRM-115: Hero bg is /uploads/2023/04/background.png (set in CSS) -->
 			</figure>
 
 		</div>
