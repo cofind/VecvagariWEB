@@ -1,6 +1,7 @@
 <?php
 /**
  * LRM-87: Contacts page — 2-column layout with contact details and Google Maps embed.
+ * LRM-106: Label two addresses, move legal details into contact column, fix button text.
  *
  * WordPress loads this template automatically for pages with slug "kontakti"
  * (page-{slug}.php takes priority in the template hierarchy).
@@ -40,7 +41,7 @@ get_header();
 								<circle cx="12" cy="10" r="3"/>
 							</svg>
 						</span>
-						<span class="vv-contact-text">Dzirnavu 13, Saldus, Saldus nov., LV-3801</span>
+						<span class="vv-contact-text"><strong>Birojs:</strong> Dzirnavu 13, Saldus, LV-3801</span>
 					</li>
 
 					<li class="vv-contact-item">
@@ -67,15 +68,15 @@ get_header();
 								<a href="tel:+37125590827" class="vv-contact-link">+371 25590827</a>
 							</div>
 							<div class="vv-phone-row">
-								<span class="vv-phone-label">Meža īpašumi un cirsmas:</span>
+								<span class="vv-phone-label">Me&#382;a &#299;pa&#353;umi un cirsmas:</span>
 								<a href="tel:+37128602441" class="vv-contact-link">+371 28602441</a>
 							</div>
 							<div class="vv-phone-row">
-								<span class="vv-phone-label">Mežizstrādes pakalpojumi:</span>
+								<span class="vv-phone-label">Me&#382;izstr&#257;des pakalpojumi:</span>
 								<a href="tel:+37126554689" class="vv-contact-link">+371 26554689</a>
 							</div>
 							<div class="vv-phone-row">
-								<span class="vv-phone-label">Grāmatvedība:</span>
+								<span class="vv-phone-label">Gr&#257;matved&#299;ba:</span>
 								<a href="tel:+37129215297" class="vv-contact-link">+371 29215297</a>
 							</div>
 						</div>
@@ -89,13 +90,19 @@ get_header();
 								<polyline points="12 6 12 12 16 14"/>
 							</svg>
 						</span>
-						<span class="vv-contact-text">Darba laiks: P–Pk 8:00–17:00</span>
+						<span class="vv-contact-text">Darba laiks: P&ndash;Pk 8:00&ndash;17:00</span>
 					</li>
 				</ul>
 
 				<a href="<?php echo esc_url( home_url( '/pieteikuma-forma/' ) ); ?>" class="vv-contacts-btn">
-					NOSŪTĪT ZIŅU &rarr;
+					NOS&#362;T&#298;T PIETEIKUMU &rarr;
 				</a>
+
+				<!-- LRM-106: Legal details at bottom of contact column -->
+				<p class="vv-contacts-legal">
+					Juridisk&#257; adrese: Saldus nov., Lutri&#326;u pag., Kami&#311;i, Za&#316;&#257; iela 1-3<br>
+					Re&#291;. nr.: 48503010838
+				</p>
 
 			</div><!-- .vv-contacts-details -->
 
@@ -104,8 +111,8 @@ get_header();
 				<iframe
 					loading="lazy"
 					src="https://maps.google.com/maps?q=Dzirnavu+13%2C+Saldus%2C+LV-3801&t=m&z=14&output=embed&iwloc=near"
-					title="SIA Vecvagari M — Dzirnavu 13, Saldus"
-					aria-label="SIA Vecvagari M atrašanās vieta kartē"
+					title="SIA Vecvagari M &mdash; Dzirnavu 13, Saldus"
+					aria-label="SIA Vecvagari M atr&#257;&#353;an&#257;s vieta kart&#275;"
 					width="100%"
 					height="100%"
 					style="border:0;"
@@ -116,17 +123,6 @@ get_header();
 
 		</div><!-- .vv-contacts-inner -->
 	</section><!-- .vv-contacts-main -->
-
-	<!-- ── Company registration info ── -->
-	<section class="vv-contacts-reg">
-		<div class="vv-contacts-inner">
-			<p class="vv-reg-info">
-				<strong>SIA &ldquo;Vecvagari M&rdquo;</strong> &nbsp;&mdash;&nbsp;
-				Reģ. nr.: 48503010838 &nbsp;&bull;&nbsp;
-				Juridiskā adrese: Saldus nov., Lutriņu pag., Namiķi, Zaļā iela 1-3
-			</p>
-		</div>
-	</section>
 
 </main>
 
