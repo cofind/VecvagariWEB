@@ -67,6 +67,12 @@ add_action( 'wp_head', function() {
     echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
 }, 99 );
 
+// LRM-108: Homepage heading hierarchy + link + alt text fixes (applied via WP-CLI to post ID 10).
+// Changes made to Elementor data (_elementor_data):
+//   - Widget 431984a: PAR MUMS heading changed from H3 → H2
+//   - Widget c222570: LASĪT VAIRĀK button URL fixed from broken IP URL → /par-mums/
+//   - Widget 6bcfdaa: Sakumlapa.png image alt set to "Vecvagari M mežizstrādes komanda"
+
 // LRM-87 / LRM-105: Force custom PHP templates for pages that need them.
 // Hello Elementor uses index.php for all pages, bypassing WP template hierarchy.
 // Priority 99 ensures this runs after Elementor Pro's template_include hook.
