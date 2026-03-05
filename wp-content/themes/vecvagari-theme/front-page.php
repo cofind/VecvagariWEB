@@ -17,7 +17,7 @@ get_header();
 <main id="content">
 
 	<!-- ── Hero ─────────────────────────────────────────────────────────── -->
-	<section class="vv-hero" aria-label="Galvenais virsraksts">
+	<section class="vv-hero" aria-label="Galvenā sadaļa">
 		<div class="vv-hero__overlay" aria-hidden="true"></div>
 		<div class="vv-hero__inner">
 			<p class="vv-hero__eyebrow">Mežizstrāde &bull; Latvija kopš 2005</p>

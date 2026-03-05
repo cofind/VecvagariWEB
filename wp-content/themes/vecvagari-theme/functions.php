@@ -33,10 +33,10 @@ add_action( 'after_setup_theme', function() {
 
 // ── Enqueue assets ──────────────────────────────────────────────────────────
 add_action( 'wp_enqueue_scripts', function() {
-	// Google Fonts: Montserrat (headings) + Open Sans (body)
+	// LRM-119: Playfair Display (h1/h2 serif) + Inter (body) + Montserrat (nav/buttons)
 	wp_enqueue_style(
 		'vecvagari-fonts',
-		'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap',
+		'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@400;600&display=swap',
 		[],
 		null
 	);

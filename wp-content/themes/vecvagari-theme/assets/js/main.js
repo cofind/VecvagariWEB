@@ -1,4 +1,5 @@
-/* LRM-112 / LRM-116: Nav — hamburger drawer, scroll header, submenu */
+/* LRM-112 / LRM-116: Nav — hamburger drawer, scroll header, submenu
+   LRM-119: Stats count-up + service card scroll reveal */
 (function () {
 	'use strict';
 
@@ -77,5 +78,58 @@
 				}
 			});
 		});
+
+		// ── LRM-119: Stats count-up on scroll ────────────────────────────
+		var statNums = document.querySelectorAll('.vv-stat__num');
+		if (statNums.length && 'IntersectionObserver' in window) {
+			function animateCount(el) {
+				var raw   = el.textContent.trim();
+				var match = raw.match(/^(\d+)(.*)$/);
+				if (!match) return;
+				var target = parseInt(match[1], 10);
+				var suffix = match[2] || '';
+				var start  = 0;
+				var dur    = 1400; // ms
+				var startTime = null;
+				function step(ts) {
+					if (!startTime) startTime = ts;
+					var progress = Math.min((ts - startTime) / dur, 1);
+					// ease-out cubic
+					var ease = 1 - Math.pow(1 - progress, 3);
+					el.textContent = Math.round(ease * target) + suffix;
+					if (progress < 1) requestAnimationFrame(step);
+				}
+				requestAnimationFrame(step);
+			}
+
+			var statsObs = new IntersectionObserver(function (entries) {
+				entries.forEach(function (entry) {
+					if (entry.isIntersecting) {
+						animateCount(entry.target);
+						statsObs.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.5 });
+
+			statNums.forEach(function (el) { statsObs.observe(el); });
+		}
+
+		// ── LRM-119: Service cards stagger scroll reveal ──────────────────
+		var cards = document.querySelectorAll('.vv-service-card');
+		if (cards.length && 'IntersectionObserver' in window) {
+			var cardObs = new IntersectionObserver(function (entries) {
+				entries.forEach(function (entry) {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('is-visible');
+						cardObs.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.15 });
+
+			cards.forEach(function (card) { cardObs.observe(card); });
+		} else {
+			// Fallback: show all immediately
+			cards.forEach(function (card) { card.classList.add('is-visible'); });
+		}
 	});
 }());
