@@ -49,7 +49,8 @@
 html, body {
 	margin: 0;
 	padding: 0;
-	overflow-x: hidden;
+	/* overflow-x:clip does not create a scroll container, so position:sticky works */
+	overflow-x: clip;
 	max-width: 100%;
 }
 
@@ -201,7 +202,7 @@ ul, ol { padding-left: 1.4em; }
 	max-width: var(--max-w);
 	margin: 0 auto;
 	padding: 0 var(--pad-x);
-	height: 68px;
+	height: 80px;
 	display: flex;
 	align-items: center;
 	gap: 32px;
@@ -210,7 +211,16 @@ ul, ol { padding-left: 1.4em; }
 .vv-header__brand { flex-shrink: 0; }
 
 .vv-header__brand img,
-.vv-header__brand .custom-logo { max-height: 48px; width: auto; display: block; }
+.vv-header__brand .custom-logo {
+	max-height: 64px;
+	width: auto;
+	display: block;
+	transition: max-height .3s;
+}
+
+/* Shrink logo slightly when scrolled to keep the slim dark bar compact */
+.vv-header.is-scrolled .vv-header__brand img,
+.vv-header.is-scrolled .vv-header__brand .custom-logo { max-height: 48px; }
 
 .vv-header__site-name {
 	font-size: 18px;
