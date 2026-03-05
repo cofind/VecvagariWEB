@@ -47,6 +47,64 @@ get_header();
 		</div>
 	</section>
 
+	<!-- LRM-121: FSC + PEFC certifications -->
+	<section class="vv-cert">
+		<div class="vv-sp-inner">
+
+			<p class="vv-section-label">SERTIFIKĀTI</p>
+			<h2 class="vv-cert__heading">Sertifikācija</h2>
+
+			<p class="vv-cert__intro">Lai veicinātu labas mežsaimniecības prakses ievērošanu mežā, uzņēmums ir FSC sertificēts kopš 2023.&nbsp;gada un PEFC sertificēts kopš 2018.&nbsp;gada.</p>
+			<p class="vv-cert__intro">Uzņēmums ir nosertificēts ar sekojošiem sertifikātiem:</p>
+
+			<ul class="vv-cert__list">
+				<li>Mežizstrādes process pēc PEFC sertifikāta kritērijiem: <strong>TT-PEFC-MDS001</strong></li>
+				<li>Koksnes piegādes ķēde pēc FSC sertifikāta kritērijiem: <strong>SCS-COC-009968</strong></li>
+			</ul>
+
+			<div class="vv-cert-badges">
+
+				<div class="vv-cert-badge">
+					<div class="vv-cert-badge__logo" aria-hidden="true">
+						<?php
+						$pefc_logo = content_url( '/uploads/2023/04/pefc-logo.png' );
+						if ( @file_exists( ABSPATH . 'wp-content/uploads/2023/04/pefc-logo.png' ) ) :
+						?>
+							<img src="<?php echo esc_url( $pefc_logo ); ?>" alt="PEFC logo" width="80">
+						<?php else : ?>
+							<span class="vv-cert-badge__abbr vv-cert-badge__abbr--pefc">PEFC</span>
+						<?php endif; ?>
+					</div>
+					<div class="vv-cert-badge__body">
+						<strong class="vv-cert-badge__name">PEFC&#8482; sertifikāts</strong>
+						<span class="vv-cert-badge__since">Sertificēts kopš 2018. gada</span>
+						<code class="vv-cert-badge__code">TT-PEFC-MDS001</code>
+					</div>
+				</div>
+
+				<div class="vv-cert-badge">
+					<div class="vv-cert-badge__logo" aria-hidden="true">
+						<?php
+						$fsc_logo = content_url( '/uploads/2023/04/fsc-logo.png' );
+						if ( @file_exists( ABSPATH . 'wp-content/uploads/2023/04/fsc-logo.png' ) ) :
+						?>
+							<img src="<?php echo esc_url( $fsc_logo ); ?>" alt="FSC logo" width="80">
+						<?php else : ?>
+							<span class="vv-cert-badge__abbr vv-cert-badge__abbr--fsc">FSC</span>
+						<?php endif; ?>
+					</div>
+					<div class="vv-cert-badge__body">
+						<strong class="vv-cert-badge__name">FSC&#174; sertifikāts</strong>
+						<span class="vv-cert-badge__since">Sertificēts kopš 2023. gada</span>
+						<code class="vv-cert-badge__code">SCS-COC-009968</code>
+					</div>
+				</div>
+
+			</div><!-- .vv-cert-badges -->
+
+		</div>
+	</section>
+
 	<section class="vv-sp-values">
 		<div class="vv-sp-inner">
 			<h2 class="vv-sp-values-title">Mūsu vērtības</h2>
