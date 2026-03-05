@@ -346,21 +346,6 @@ img,
     padding: 0 24px;
 }
 
-/* ── Hero heading ── */
-.vv-contacts-hero {
-    background-color: #1a3320;
-    padding: 64px 0 52px;
-}
-
-.vv-contacts-h1 {
-    font-size: clamp(32px, 5vw, 52px);
-    font-weight: 700;
-    color: #ffffff;
-    margin: 0;
-    letter-spacing: -0.01em;
-    line-height: 1.15;
-}
-
 /* ── Main 2-column section ── */
 .vv-contacts-main {
     background-color: #ffffff;
@@ -649,6 +634,33 @@ img,
     padding: 64px 0 52px;
 }
 
+.vv-sp-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 16px 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #a8c5a0;
+}
+
+.vv-sp-breadcrumb a {
+    color: #a8c5a0;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.vv-sp-breadcrumb a:hover {
+    color: #ffffff;
+}
+
+.vv-sp-breadcrumb__sep {
+    color: #a8c5a0;
+    opacity: 0.6;
+}
+
 .vv-sp-h1 {
     font-size: clamp(32px, 5vw, 52px);
     font-weight: 700;
@@ -915,5 +927,20 @@ img,
         width: 100%;
         max-width: 320px;
         justify-content: center;
+    }
+}
+
+/* ============================================================
+   LRM-103: Form page content wrapper
+   ============================================================ */
+
+.vv-form-page-content {
+    background-color: #ffffff;
+    padding: 64px 0;
+}
+
+@media (max-width: 600px) {
+    .vv-form-page-content {
+        padding: 40px 0;
     }
 }

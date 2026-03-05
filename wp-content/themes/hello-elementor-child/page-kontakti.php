@@ -18,10 +18,15 @@ get_header();
 
 <main id="content" class="vv-contacts-page">
 
-	<!-- ── Hero heading ── -->
-	<section class="vv-contacts-hero">
-		<div class="vv-contacts-inner">
-			<h1 class="vv-contacts-h1">Sazinies ar mums</h1>
+	<!-- ── Hero ── -->
+	<section class="vv-sp-hero">
+		<div class="vv-sp-inner">
+			<nav class="vv-sp-breadcrumb" aria-label="Navigācijas ceļš">
+				<a href="<?php echo esc_url( home_url( '/' ) ); ?>">S&#256;KUMLAPA</a>
+				<span class="vv-sp-breadcrumb__sep" aria-hidden="true">&rsaquo;</span>
+				<span>KONTAKTI</span>
+			</nav>
+			<h1 class="vv-sp-h1">Sazinies ar mums</h1>
 		</div>
 	</section>
 

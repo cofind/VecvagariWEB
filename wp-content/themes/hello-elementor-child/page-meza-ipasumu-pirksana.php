@@ -19,6 +19,11 @@ get_header();
 	<!-- ── Hero ── -->
 	<section class="vv-sp-hero">
 		<div class="vv-sp-inner">
+			<nav class="vv-sp-breadcrumb" aria-label="Navigācijas ceļš">
+				<a href="<?php echo esc_url( home_url( '/' ) ); ?>">S&#256;KUMLAPA</a>
+				<span class="vv-sp-breadcrumb__sep" aria-hidden="true">&rsaquo;</span>
+				<span>ME&#381;A &#298;PA&#352;UMU PIRKŠANA</span>
+			</nav>
 			<h1 class="vv-sp-h1">Me&#382;a &#299;pa&#353;umu pirkšana</h1>
 			<p class="vv-sp-subtitle">P&#275;rkam me&#382;a &#299;pa&#353;umus par god&#299;gu tirgus cenu vis&#257; Latvij&#257;</p>
 		</div>
