@@ -102,3 +102,212 @@ img,
         overflow-wrap: break-word;
     }
 }
+
+/* ============================================================
+   LRM-84: Footer redesign — 3-column layout
+   ============================================================ */
+
+/* ── Outer wrapper ── */
+.vv-footer {
+    font-family: 'Inter', 'Montserrat', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #cccccc;
+    background-color: #1c2b1c;
+}
+
+/* ── Shared inner container (max-width + centred) ── */
+.vv-footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* ── Main 3-column area ── */
+.vv-footer-main .vv-footer-inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 48px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+/* ── Column headings ── */
+.vv-footer-heading {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin: 0 0 20px 0;
+}
+
+/* ── Column 1: Brand ── */
+.vv-footer-logo {
+    margin-bottom: 20px;
+}
+
+.vv-footer-logo img {
+    max-width: 160px;
+    height: auto;
+    display: block;
+}
+
+.vv-footer-site-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.vv-footer-desc {
+    font-size: 14px;
+    color: #aaaaaa;
+    margin: 0 0 24px 0;
+    max-width: 300px;
+}
+
+/* Social icons row */
+.vv-footer-social {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.vv-social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    color: #aaaaaa;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.vv-social-link:hover {
+    color: #ffffff;
+}
+
+/* ── Column 2: Navigation ── */
+.vv-footer-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.vv-footer-links li {
+    margin-bottom: 12px;
+}
+
+.vv-footer-links a {
+    color: #aaaaaa;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
+
+.vv-footer-links a:hover {
+    color: #ffffff;
+}
+
+/* ── Column 3: Contacts ── */
+.vv-footer-address {
+    font-style: normal;
+}
+
+.vv-footer-address p {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    color: #aaaaaa;
+}
+
+.vv-footer-address a {
+    color: #aaaaaa;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.vv-footer-address a:hover {
+    color: #ffffff;
+}
+
+.vv-maps-link {
+    font-size: 14px;
+}
+
+/* ── Bottom bar ── */
+.vv-footer-bottom {
+    background-color: #152215;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.vv-footer-bottom .vv-footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+
+.vv-footer-copyright {
+    font-size: 13px;
+    color: #888888;
+}
+
+.vv-footer-privacy {
+    font-size: 13px;
+    color: #888888;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.vv-footer-privacy:hover {
+    color: #cccccc;
+}
+
+/* ── Mobile: tablet (≤ 900 px) — 2-column grid ── */
+@media (max-width: 900px) {
+    .vv-footer-main .vv-footer-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 36px;
+        padding-top: 48px;
+        padding-bottom: 48px;
+    }
+
+    .vv-footer-brand {
+        grid-column: 1 / -1;
+    }
+
+    .vv-footer-desc {
+        max-width: 100%;
+    }
+}
+
+/* ── Mobile: phone (≤ 600 px) — single column ── */
+@media (max-width: 600px) {
+    .vv-footer-main .vv-footer-inner {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+
+    .vv-footer-brand {
+        grid-column: auto;
+    }
+
+    /* Divider between columns on mobile */
+    .vv-footer-col + .vv-footer-col {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 28px;
+    }
+
+    .vv-footer-bottom .vv-footer-inner {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+}
