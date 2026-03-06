@@ -62,20 +62,31 @@ add_action( 'wp_enqueue_scripts', function() {
 // separate post (possibly with a different slug). We resolve the LV original
 // to find the right template filename, so EN and SV pages load the same
 // template as their LV counterpart (which already uses vv_t() for all strings).
+// LRM-127: Added is_front_page() guard so homepage always uses front-page.php
+// regardless of _wp_page_template meta (Elementor Canvas was overriding it).
+// Slug map updated to canonical short slugs after service pages were renamed.
 add_filter( 'template_include', function( $template ) {
 	if ( ! is_page() ) {
 		return $template;
 	}
 
+	// Front page always uses front-page.php (overrides Elementor Canvas).
+	if ( is_front_page() ) {
+		$path = get_template_directory() . '/front-page.php';
+		if ( file_exists( $path ) ) {
+			return $path;
+		}
+	}
+
 	// slug → template filename for all pages that need custom templates.
 	$map = [
-		'par-mums'                               => 'page-par-mums.php',
-		'kontakti'                               => 'page-kontakti.php',
-		'vakances'                               => 'page-vakances.php',
-		'meza-ipasumu-pirksana'                  => 'page-meza-ipasumu-pirksana.php',
-		'pieteikuma-forma'                       => 'page-pieteikuma-forma.php',
-		'cirsmu-un-sortimentu-pie-cela-pirksana' => 'page-cirsmu-un-sortimentu-pirksana.php',
-		'mezizstrades-pakalpojuma-sniegsana'     => 'page-mezizstrades-pakalpojumi.php',
+		'par-mums'                          => 'page-par-mums.php',
+		'kontakti'                          => 'page-kontakti.php',
+		'vakances'                          => 'page-vakances.php',
+		'meza-ipasumu-pirksana'             => 'page-meza-ipasumu-pirksana.php',
+		'pieteikuma-forma'                  => 'page-pieteikuma-forma.php',
+		'cirsmu-un-sortimentu-pirksana'     => 'page-cirsmu-un-sortimentu-pirksana.php',
+		'mezizstrades-pakalpojumi'          => 'page-mezizstrades-pakalpojumi.php',
 	];
 
 	// Resolve to the LV (default-language) post so translated pages get the
