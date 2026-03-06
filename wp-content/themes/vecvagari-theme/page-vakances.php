@@ -39,7 +39,7 @@ $vakances = get_posts( [
 	<section class="vv-sp-hero">
 		<div class="vv-sp-inner">
 			<nav class="vv-sp-breadcrumb" aria-label="<?php echo esc_attr( vv_t( 'Navigācijas ceļš', 'Breadcrumb', 'Brödsmula' ) ); ?>">
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php echo esc_html( vv_t( 'SĀKUMLAPA', 'HOME', 'HEM' ) ); ?></a>
+				<a href="<?php echo esc_url( vv_url( '/' ) ); ?>"><?php echo esc_html( vv_t( 'SĀKUMLAPA', 'HOME', 'HEM' ) ); ?></a>
 				<span class="vv-sp-breadcrumb__sep" aria-hidden="true">&rsaquo;</span>
 				<span><?php echo esc_html( vv_t( 'VAKANCES', 'VACANCIES', 'LEDIGA TJÄNSTER' ) ); ?></span>
 			</nav>
@@ -218,7 +218,7 @@ $vakances = get_posts( [
 				<label>
 					<input type="checkbox" name="gdpr_consent" value="1" required>
 					<?php echo esc_html( vv_t( 'Piekrītu savu datu apstrādei atbilstoši', 'I consent to the processing of my data in accordance with the', 'Jag samtycker till behandlingen av mina uppgifter i enlighet med' ) ); ?>
-					<a href="<?php echo esc_url( home_url( '/privatuma-politika/' ) ); ?>" target="_blank"><?php echo esc_html( vv_t( 'Privātuma politikai', 'Privacy Policy', 'integritetspolicyn' ) ); ?></a> <span aria-hidden="true">*</span>
+					<a href="<?php echo esc_url( vv_url( '/privatuma-politika/' ) ); ?>" target="_blank"><?php echo esc_html( vv_t( 'Privātuma politikai', 'Privacy Policy', 'integritetspolicyn' ) ); ?></a> <span aria-hidden="true">*</span>
 				</label>
 			</div>
 

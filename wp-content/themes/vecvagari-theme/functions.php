@@ -80,6 +80,10 @@ add_filter( 'template_include', function( $template ) {
 
 	// slug → template filename for all pages that need custom templates.
 	$map = [
+		// LRM-128: 'home' is the WP slug of the front page (ID 10) and its EN/SV translations.
+		// is_front_page() is only true for the LV post; translated home pages fall through here
+		// until the 301 redirect below sends them to /en/ or /sv/.
+		'home'                              => 'front-page.php',
 		'par-mums'                          => 'page-par-mums.php',
 		'kontakti'                          => 'page-kontakti.php',
 		'vakances'                          => 'page-vakances.php',
@@ -393,6 +397,28 @@ function vv_t( string $lv, string $en = '', string $sv = '' ): string {
 	return $lv;
 }
 
+/**
+ * LRM-128: Language-aware URL helper.
+ * Replaces home_url('/slug/') in all templates so internal links stay in the
+ * current Polylang language (e.g. /en/par-mums/ instead of /par-mums/).
+ *
+ * @param string $path Site-root-relative path, e.g. '/par-mums/' or '/'.
+ * @return string Full URL with the language prefix prepended when not LV.
+ */
+function vv_url( string $path ): string {
+	static $prefix = null;
+	if ( $prefix === null ) {
+		$resolved = function_exists( 'pll_current_language' ) ? pll_current_language() : false;
+		$lang     = $resolved ?: 'lv';
+		$prefix   = ( $lang === 'lv' ) ? '' : '/' . $lang;
+	}
+	$path = '/' . ltrim( $path, '/' );
+	if ( $path === '/' ) {
+		return trailingslashit( home_url( $prefix ?: '/' ) );
+	}
+	return home_url( $prefix . $path );
+}
+
 /// LRM-128: Suppress Polylang's canonical redirect when WP resolves the LV source
 // page instead of its EN/SV translation (same slug, lower ID wins in get_page_by_path).
 // Without this, /en/par-mums/ → 301 → /par-mums/ because Polylang sees a LV post
@@ -417,6 +443,50 @@ add_filter( 'pll_check_canonical_url', function( $redirect_url, $language ) {
 	}
 	return $redirect_url;
 }, 10, 2 );
+
+// LRM-128: Fix get_permalink() for translated front pages so pll_the_languages()
+// returns /en/ and /sv/ for the language switcher instead of /en/home/ and /sv/home/.
+// Priority 30 runs after Polylang's page_link filter (priority 20) so we can override it.
+add_filter( 'page_link', function( $url, $post_id ) {
+	$front_id = (int) get_option( 'page_on_front' );
+	if ( ! $front_id || (int) $post_id === $front_id ) {
+		return $url;
+	}
+	if ( ! function_exists( 'pll_get_post_translations' ) || ! function_exists( 'pll_get_post_language' ) ) {
+		return $url;
+	}
+	$translations = pll_get_post_translations( $front_id );
+	if ( in_array( (int) $post_id, array_values( $translations ), true ) ) {
+		$lang = pll_get_post_language( (int) $post_id );
+		if ( $lang && $lang !== 'lv' ) {
+			return trailingslashit( home_url( '/' . $lang ) );
+		}
+	}
+	return $url;
+}, 30, 2 );
+
+// LRM-128: Redirect /en/home/ → /en/ and /sv/home/ → /sv/ (301).
+// These URLs exist because Polylang stored the WP page slug in the permalink;
+// after the page_link fix above they will no longer appear in the switcher,
+// but old links/cache may still point here.
+add_action( 'template_redirect', function() {
+	if ( ! is_page() || ! function_exists( 'pll_get_post_translations' ) ) {
+		return;
+	}
+	$front_id   = (int) get_option( 'page_on_front' );
+	$queried_id = (int) get_queried_object_id();
+	if ( ! $front_id || $queried_id === $front_id ) {
+		return;
+	}
+	$translations = pll_get_post_translations( $front_id );
+	if ( in_array( $queried_id, array_values( $translations ), true ) ) {
+		$lang = pll_get_post_language( $queried_id );
+		if ( $lang && $lang !== 'lv' ) {
+			wp_redirect( home_url( '/' . $lang . '/' ), 301 );
+			exit;
+		}
+	}
+} );
 
 // Register the 'vakance' CPT with Polylang so vacancies can be translated.
 add_filter( 'pll_get_post_types', function( $post_types ) {

@@ -18,7 +18,7 @@ get_header();
 	<section class="vv-sp-hero">
 		<div class="vv-sp-inner">
 			<nav class="vv-sp-breadcrumb" aria-label="<?php echo esc_attr( vv_t( 'Navigācijas ceļš', 'Breadcrumb', 'Brödsmula' ) ); ?>">
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php echo esc_html( vv_t( 'SĀKUMLAPA', 'HOME', 'HEM' ) ); ?></a>
+				<a href="<?php echo esc_url( vv_url( '/' ) ); ?>"><?php echo esc_html( vv_t( 'SĀKUMLAPA', 'HOME', 'HEM' ) ); ?></a>
 				<span class="vv-sp-breadcrumb__sep" aria-hidden="true">&rsaquo;</span>
 				<span><?php echo esc_html( vv_t( 'KONTAKTI', 'CONTACT', 'KONTAKT' ) ); ?></span>
 			</nav>
@@ -88,7 +88,7 @@ get_header();
 
 				</ul>
 
-				<a href="<?php echo esc_url( home_url( '/pieteikuma-forma/' ) ); ?>" class="vv-contacts-btn">
+				<a href="<?php echo esc_url( vv_url( '/pieteikuma-forma/' ) ); ?>" class="vv-contacts-btn">
 					<?php echo esc_html( vv_t( 'NOSŪTĪT PIETEIKUMU →', 'SEND MESSAGE →', 'SKICKA MEDDELANDE →' ) ); ?>
 				</a>
 

@@ -23,7 +23,7 @@ get_header();
 			<h1 class="vv-hero__h1"><?php echo vv_t( 'Meža īpašuma vērtību<br>pārvēršam rezultātos', 'We turn forest property<br>value into results', 'Vi omvandlar skogsfastighetens<br>värde till resultat' ); ?></h1>
 			<p class="vv-hero__sub"><?php echo esc_html( vv_t( 'Pērkam meža īpašumus un cirsmas. Sniedzam mežizstrādes pakalpojumus. Kurzeme un Zemgale.', 'We buy forests, felling sites and timber assortments. We provide quality forestry services in Kurzeme and Zemgale.', 'Vi köper skogar, avverkningsplatser och sortiment. Vi erbjuder kvalitativa skogstjänster i Kurzeme och Zemgale.' ) ); ?></p>
 			<div class="vv-hero__actions">
-				<a href="<?php echo esc_url( home_url( '/pieteikuma-forma/' ) ); ?>" class="vv-btn vv-btn--primary">
+				<a href="<?php echo esc_url( vv_url( '/pieteikuma-forma/' ) ); ?>" class="vv-btn vv-btn--primary">
 					<?php echo esc_html( vv_t( 'PIETEIKT PAKALPOJUMU →', 'APPLY FOR SERVICE →', 'ANSÖK OM TJÄNST →' ) ); ?>
 				</a>
 				<a href="#par-mums" class="vv-btn vv-btn--outline">
@@ -72,7 +72,7 @@ get_header();
 					'We work with private owners, municipalities and companies. Our long-standing cooperation with Latvian State Forests confirms our professionalism and reliability.',
 					'Vi arbetar med privata ägare, kommuner och företag. Vårt långvariga samarbete med Lettlands statsskogar bekräftar vår professionalism och tillförlitlighet.'
 				) ); ?></p>
-				<a href="<?php echo esc_url( home_url( '/par-mums/' ) ); ?>" class="vv-btn vv-btn--green">
+				<a href="<?php echo esc_url( vv_url( '/par-mums/' ) ); ?>" class="vv-btn vv-btn--green">
 					<?php echo esc_html( vv_t( 'LASĪT VAIRĀK →', 'READ MORE →', 'LÄS MER →' ) ); ?>
 				</a>
 			</div>
@@ -108,7 +108,7 @@ get_header();
 						'We buy forest properties at a fair market price throughout Latvia. Free valuation, transaction within 2–3 weeks.',
 						'Vi köper skogsfastigheter till ett rättvist marknadspris i hela Lettland. Kostnadsfri värdering, transaktion inom 2–3 veckor.'
 					) ); ?></p>
-					<a href="<?php echo esc_url( home_url( '/meza-ipasumu-pirksana/' ) ); ?>" class="vv-service-card__link">
+					<a href="<?php echo esc_url( vv_url( '/meza-ipasumu-pirksana/' ) ); ?>" class="vv-service-card__link">
 						<?php echo esc_html( vv_t( 'Uzzināt vairāk →', 'Learn more →', 'Läs mer →' ) ); ?>
 					</a>
 				</article>
@@ -121,7 +121,7 @@ get_header();
 						'Fast and fair felling site assessment using modern tools. We buy felling sites and timber assortments at competitive prices.',
 						'Snabb och rättvis bedömning av avverkningsplatser med moderna verktyg. Vi köper avverkningsplatser och sortiment till konkurrenskraftiga priser.'
 					) ); ?></p>
-					<a href="<?php echo esc_url( home_url( '/cirsmu-un-sortimentu-pirksana/' ) ); ?>" class="vv-service-card__link">
+					<a href="<?php echo esc_url( vv_url( '/cirsmu-un-sortimentu-pirksana/' ) ); ?>" class="vv-service-card__link">
 						<?php echo esc_html( vv_t( 'Uzzināt vairāk →', 'Learn more →', 'Läs mer →' ) ); ?>
 					</a>
 				</article>
@@ -134,7 +134,7 @@ get_header();
 						'Quality forestry across Kurzeme and Zemgale with modern equipment. We follow sustainable forestry principles in every job.',
 						'Kvalitativt skogsbruk i hela Kurzeme och Zemgale med modern utrustning. Vi följer hållbara skogsbruksprinciper i varje arbete.'
 					) ); ?></p>
-					<a href="<?php echo esc_url( home_url( '/mezizstrades-pakalpojumi/' ) ); ?>" class="vv-service-card__link">
+					<a href="<?php echo esc_url( vv_url( '/mezizstrades-pakalpojumi/' ) ); ?>" class="vv-service-card__link">
 						<?php echo esc_html( vv_t( 'Uzzināt vairāk →', 'Learn more →', 'Läs mer →' ) ); ?>
 					</a>
 				</article>

@@ -14,7 +14,7 @@
 		<h2 class="vv-cta-heading"><?php echo esc_html( vv_t( 'Interesē meža īpašumu pārdošana vai mežizstrādes pakalpojums?', 'Interested in selling forest property or forestry services?', 'Intresserad av att sälja skogsfastighet eller skogstjänster?' ) ); ?></h2>
 		<p class="vv-cta-sub"><?php echo esc_html( vv_t( 'Sazinieties ar mums — novērtēšana un konsultācija bez maksas.', 'Contact us — valuation and consultation is free.', 'Kontakta oss — värdering och konsultation är gratis.' ) ); ?></p>
 		<div class="vv-cta-buttons">
-			<a href="<?php echo esc_url( home_url( '/pieteikuma-forma/' ) ); ?>" class="vv-cta-btn vv-cta-btn--primary">
+			<a href="<?php echo esc_url( vv_url( '/pieteikuma-forma/' ) ); ?>" class="vv-cta-btn vv-cta-btn--primary">
 				<?php echo esc_html( vv_t( 'PIETEIKT PAKALPOJUMU →', 'APPLY FOR SERVICE →', 'ANSÖK OM TJÄNST →' ) ); ?>
 			</a>
 			<a href="tel:+37125590827" class="vv-cta-btn vv-cta-btn--outline">
@@ -34,7 +34,7 @@
 			<div class="vv-footer-col vv-footer-brand">
 
 				<div class="vv-footer-logo">
-					<a href="<?php echo esc_url( home_url( '/' ) ); ?>">
+					<a href="<?php echo esc_url( vv_url( '/' ) ); ?>">
 						<img
 							src="<?php echo esc_url( content_url( '/uploads/2023/04/Logo_white.png' ) ); ?>"
 							alt="<?php bloginfo( 'name' ); ?>"
@@ -64,12 +64,12 @@
 			<div class="vv-footer-col vv-footer-nav">
 				<h4 class="vv-footer-heading"><?php echo esc_html( vv_t( 'NODERĪGI', 'USEFUL LINKS', 'ANVÄNDBARA LÄNKAR' ) ); ?></h4>
 				<ul class="vv-footer-links">
-					<li><a href="<?php echo esc_url( home_url( '/par-mums/' ) ); ?>"><?php echo esc_html( vv_t( 'Par mums', 'About us', 'Om oss' ) ); ?></a></li>
-					<li><a href="<?php echo esc_url( home_url( '/meza-ipasumu-pirksana/' ) ); ?>"><?php echo esc_html( vv_t( 'Meža īpašumu pirkšana', 'Forest property purchase', 'Köp av skogsfastigheter' ) ); ?></a></li>
-					<li><a href="<?php echo esc_url( home_url( '/cirsmu-un-sortimentu-pirksana/' ) ); ?>"><?php echo esc_html( vv_t( 'Cirsmu un sortimentu pirkšana', 'Felling sites purchase', 'Köp av avverkningsplatser' ) ); ?></a></li>
-					<li><a href="<?php echo esc_url( home_url( '/mezizstrades-pakalpojumi/' ) ); ?>"><?php echo esc_html( vv_t( 'Mežizstrādes pakalpojumi', 'Forestry services', 'Skogstjänster' ) ); ?></a></li>
-					<li><a href="<?php echo esc_url( home_url( '/pieteikuma-forma/' ) ); ?>"><?php echo esc_html( vv_t( 'Pieteikuma forma', 'Application form', 'Ansökningsblankett' ) ); ?></a></li>
-					<li><a href="<?php echo esc_url( home_url( '/kontakti/' ) ); ?>"><?php echo esc_html( vv_t( 'Kontakti', 'Contact', 'Kontakt' ) ); ?></a></li>
+					<li><a href="<?php echo esc_url( vv_url( '/par-mums/' ) ); ?>"><?php echo esc_html( vv_t( 'Par mums', 'About us', 'Om oss' ) ); ?></a></li>
+					<li><a href="<?php echo esc_url( vv_url( '/meza-ipasumu-pirksana/' ) ); ?>"><?php echo esc_html( vv_t( 'Meža īpašumu pirkšana', 'Forest property purchase', 'Köp av skogsfastigheter' ) ); ?></a></li>
+					<li><a href="<?php echo esc_url( vv_url( '/cirsmu-un-sortimentu-pirksana/' ) ); ?>"><?php echo esc_html( vv_t( 'Cirsmu un sortimentu pirkšana', 'Felling sites purchase', 'Köp av avverkningsplatser' ) ); ?></a></li>
+					<li><a href="<?php echo esc_url( vv_url( '/mezizstrades-pakalpojumi/' ) ); ?>"><?php echo esc_html( vv_t( 'Mežizstrādes pakalpojumi', 'Forestry services', 'Skogstjänster' ) ); ?></a></li>
+					<li><a href="<?php echo esc_url( vv_url( '/pieteikuma-forma/' ) ); ?>"><?php echo esc_html( vv_t( 'Pieteikuma forma', 'Application form', 'Ansökningsblankett' ) ); ?></a></li>
+					<li><a href="<?php echo esc_url( vv_url( '/kontakti/' ) ); ?>"><?php echo esc_html( vv_t( 'Kontakti', 'Contact', 'Kontakt' ) ); ?></a></li>
 				</ul>
 			</div>
 
@@ -117,7 +117,7 @@
 			<span class="vv-footer-copyright">
 				&copy; <?php echo esc_html( date( 'Y' ) ); ?> SIA &ldquo;Vecvagari M&rdquo;
 				&nbsp;&middot;&nbsp;
-				<a href="<?php echo esc_url( home_url( '/privatuma-politika/' ) ); ?>" class="vv-footer-privacy"><?php echo esc_html( vv_t( 'Privātuma politika', 'Privacy Policy', 'Integritetspolicy' ) ); ?></a>
+				<a href="<?php echo esc_url( vv_url( '/privatuma-politika/' ) ); ?>" class="vv-footer-privacy"><?php echo esc_html( vv_t( 'Privātuma politika', 'Privacy Policy', 'Integritetspolicy' ) ); ?></a>
 			</span>
 		</div>
 	</div>

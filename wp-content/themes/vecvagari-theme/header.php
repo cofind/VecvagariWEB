@@ -17,7 +17,7 @@
 			<?php if ( has_custom_logo() ) : ?>
 				<?php the_custom_logo(); ?>
 			<?php else : ?>
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="vv-header__site-name" rel="home">
+				<a href="<?php echo esc_url( vv_url( '/' ) ); ?>" class="vv-header__site-name" rel="home">
 					<?php bloginfo( 'name' ); ?>
 				</a>
 			<?php endif; ?>
@@ -43,17 +43,17 @@
 					$in_services    = in_array( $slug, $service_slugs, true );
 					$svc_cls        = $in_services ? ' current-menu-parent' : '';
 					echo '<ul class="vv-nav__list">';
-					echo '<li><a href="' . esc_url( home_url( '/par-mums/' ) ) . '">' . esc_html( vv_t( 'Par mums', 'About us', 'Om oss' ) ) . '</a></li>';
+					echo '<li><a href="' . esc_url( vv_url( '/par-mums/' ) ) . '">' . esc_html( vv_t( 'Par mums', 'About us', 'Om oss' ) ) . '</a></li>';
 					echo '<li class="menu-item-has-children' . $svc_cls . '">';
 					echo '<a href="#">' . esc_html( vv_t( 'Pakalpojumi', 'Services', 'Tjänster' ) ) . ' <span class="vv-nav__arrow" aria-hidden="true">&#9660;</span></a>';
 					echo '<ul class="sub-menu">';
-					echo '<li><a href="' . esc_url( home_url( '/meza-ipasumu-pirksana/' ) ) . '">' . esc_html( vv_t( 'Meža īpašumu pirkšana', 'Forest property purchase', 'Köp av skogsfastigheter' ) ) . '</a></li>';
-					echo '<li><a href="' . esc_url( home_url( '/cirsmu-un-sortimentu-pirksana/' ) ) . '">' . esc_html( vv_t( 'Cirsmu un sortimentu pirkšana', 'Felling sites purchase', 'Köp av avverkningsplatser' ) ) . '</a></li>';
-					echo '<li><a href="' . esc_url( home_url( '/mezizstrades-pakalpojumi/' ) ) . '">' . esc_html( vv_t( 'Mežizstrādes pakalpojumi', 'Forestry services', 'Skogstjänster' ) ) . '</a></li>';
+					echo '<li><a href="' . esc_url( vv_url( '/meza-ipasumu-pirksana/' ) ) . '">' . esc_html( vv_t( 'Meža īpašumu pirkšana', 'Forest property purchase', 'Köp av skogsfastigheter' ) ) . '</a></li>';
+					echo '<li><a href="' . esc_url( vv_url( '/cirsmu-un-sortimentu-pirksana/' ) ) . '">' . esc_html( vv_t( 'Cirsmu un sortimentu pirkšana', 'Felling sites purchase', 'Köp av avverkningsplatser' ) ) . '</a></li>';
+					echo '<li><a href="' . esc_url( vv_url( '/mezizstrades-pakalpojumi/' ) ) . '">' . esc_html( vv_t( 'Mežizstrādes pakalpojumi', 'Forestry services', 'Skogstjänster' ) ) . '</a></li>';
 					echo '</ul>';
 					echo '</li>';
-					echo '<li><a href="' . esc_url( home_url( '/vakances/' ) ) . '">' . esc_html( vv_t( 'Vakances', 'Vacancies', 'Lediga tjänster' ) ) . '</a></li>';
-					echo '<li><a href="' . esc_url( home_url( '/kontakti/' ) ) . '">' . esc_html( vv_t( 'Kontakti', 'Contact', 'Kontakt' ) ) . '</a></li>';
+					echo '<li><a href="' . esc_url( vv_url( '/vakances/' ) ) . '">' . esc_html( vv_t( 'Vakances', 'Vacancies', 'Lediga tjänster' ) ) . '</a></li>';
+					echo '<li><a href="' . esc_url( vv_url( '/kontakti/' ) ) . '">' . esc_html( vv_t( 'Kontakti', 'Contact', 'Kontakt' ) ) . '</a></li>';
 					echo '</ul>';
 				},
 			] );
@@ -61,7 +61,7 @@
 		</nav>
 
 		<!-- CTA button (desktop) -->
-		<a href="<?php echo esc_url( home_url( '/pieteikuma-forma/' ) ); ?>" class="vv-header__cta">
+		<a href="<?php echo esc_url( vv_url( '/pieteikuma-forma/' ) ); ?>" class="vv-header__cta">
 			<?php echo esc_html( vv_t( 'Pieteikties', 'Apply', 'Ansök' ) ); ?>
 		</a>
 

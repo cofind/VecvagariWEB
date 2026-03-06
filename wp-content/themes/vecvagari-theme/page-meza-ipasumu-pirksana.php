@@ -18,7 +18,7 @@ get_header();
 	<section class="vv-sp-hero">
 		<div class="vv-sp-inner">
 			<nav class="vv-sp-breadcrumb" aria-label="<?php echo esc_attr( vv_t( 'Navigācijas ceļš', 'Breadcrumb', 'Brödsmula' ) ); ?>">
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php echo esc_html( vv_t( 'SĀKUMLAPA', 'HOME', 'HEM' ) ); ?></a>
+				<a href="<?php echo esc_url( vv_url( '/' ) ); ?>"><?php echo esc_html( vv_t( 'SĀKUMLAPA', 'HOME', 'HEM' ) ); ?></a>
 				<span class="vv-sp-breadcrumb__sep" aria-hidden="true">&rsaquo;</span>
 				<span><?php echo esc_html( vv_t( 'MEŽA ĪPAŠUMU PIRKŠANA', 'FOREST PROPERTY PURCHASE', 'KÖP AV SKOGSFASTIGHETER' ) ); ?></span>
 			</nav>
@@ -109,7 +109,7 @@ get_header();
 			<h2 class="vv-cta-heading"><?php echo esc_html( vv_t( 'Vēlaties pārdot meža īpašumu?', 'Want to sell forest property?', 'Vill du sälja skogsfastighet?' ) ); ?></h2>
 			<p class="vv-cta-sub"><?php echo esc_html( vv_t( 'Novērtēšana un konsultācija bez maksas. Sazinieties — atbildēsim darba dienas laikā.', 'Valuation and consultation is free. Contact us — we respond within a working day.', 'Värdering och konsultation är gratis. Kontakta oss — vi svarar inom en arbetsdag.' ) ); ?></p>
 			<div class="vv-cta-buttons">
-				<a href="<?php echo esc_url( home_url( '/pieteikuma-forma/' ) ); ?>" class="vv-cta-btn vv-cta-btn--primary">
+				<a href="<?php echo esc_url( vv_url( '/pieteikuma-forma/' ) ); ?>" class="vv-cta-btn vv-cta-btn--primary">
 					<?php echo esc_html( vv_t( 'PIETEIKT PAKALPOJUMU →', 'APPLY FOR SERVICE →', 'ANSÖK OM TJÄNST →' ) ); ?>
 				</a>
 				<a href="tel:+37128602441" class="vv-cta-btn vv-cta-btn--outline">
