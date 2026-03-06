@@ -1,6 +1,9 @@
 <?php
 /**
- * LRM-128: Create EN + SV translated pages for all content pages.
+ * LRM-128/LRM-129: Create EN + SV translated pages for all content pages.
+ * LRM-129: Updated to use language-specific slugs (en_slug, sv_slug) instead
+ * of the LV slug for all EN/SV pages. This eliminates WordPress slug collisions
+ * which caused Polylang to always serve the lower-ID (LV) page.
  *
  * Run once on the server (idempotent — skips pages that already exist):
  *   wp eval-file bin/setup-translations.php --allow-root
@@ -20,15 +23,17 @@ if ( ! function_exists( 'pll_set_post_language' ) ) {
 // lv_slug: LV page slug to look up, or null for the static front page.
 // en_title / sv_title: page titles for each translation.
 
+// LRM-129: Each page now has explicit en_slug / sv_slug so translated pages
+// use language-specific URL slugs, avoiding WordPress slug collisions.
 $pages = [
-	[ 'lv_slug' => null,                               'en_title' => 'Vecvagari M – Forestry in Kurzeme and Zemgale',   'sv_title' => 'Vecvagari M – Skogsbruk i Kurzeme och Zemgale'  ],
-	[ 'lv_slug' => 'par-mums',                         'en_title' => 'About us',                                        'sv_title' => 'Om oss'                                          ],
-	[ 'lv_slug' => 'meza-ipasumu-pirksana',            'en_title' => 'Forest property purchase',                        'sv_title' => 'Köp av skogsfastigheter'                         ],
-	[ 'lv_slug' => 'cirsmu-un-sortimentu-pirksana',    'en_title' => 'Purchase of felling sites and assortments',       'sv_title' => 'Köp av avverkningsplatser och sortiment'         ],
-	[ 'lv_slug' => 'mezizstrades-pakalpojumi',         'en_title' => 'Forestry services',                               'sv_title' => 'Skogstjänster'                                   ],
-	[ 'lv_slug' => 'vakances',                         'en_title' => 'Vacancies',                                       'sv_title' => 'Lediga tjänster'                                 ],
-	[ 'lv_slug' => 'kontakti',                         'en_title' => 'Contact',                                         'sv_title' => 'Kontakt'                                         ],
-	[ 'lv_slug' => 'pieteikuma-forma',                 'en_title' => 'Application form',                                'sv_title' => 'Ansökningsformulär'                              ],
+	[ 'lv_slug' => null,                            'en_slug' => 'home-en',                    'sv_slug' => 'hem',                          'en_title' => 'Vecvagari M – Forestry in Kurzeme and Zemgale',   'sv_title' => 'Vecvagari M – Skogsbruk i Kurzeme och Zemgale'  ],
+	[ 'lv_slug' => 'par-mums',                      'en_slug' => 'about-us',                   'sv_slug' => 'om-oss',                       'en_title' => 'About us',                                        'sv_title' => 'Om oss'                                          ],
+	[ 'lv_slug' => 'meza-ipasumu-pirksana',         'en_slug' => 'forest-property-purchase',   'sv_slug' => 'kop-av-skogsfastigheter',      'en_title' => 'Forest property purchase',                        'sv_title' => 'Köp av skogsfastigheter'                         ],
+	[ 'lv_slug' => 'cirsmu-un-sortimentu-pirksana', 'en_slug' => 'felling-sites-purchase',     'sv_slug' => 'kop-av-avverkningsplatser',    'en_title' => 'Purchase of felling sites and assortments',       'sv_title' => 'Köp av avverkningsplatser och sortiment'         ],
+	[ 'lv_slug' => 'mezizstrades-pakalpojumi',      'en_slug' => 'forestry-services',          'sv_slug' => 'skogstjanster',                'en_title' => 'Forestry services',                               'sv_title' => 'Skogstjänster'                                   ],
+	[ 'lv_slug' => 'vakances',                      'en_slug' => 'vacancies',                  'sv_slug' => 'lediga-tjanster',              'en_title' => 'Vacancies',                                       'sv_title' => 'Lediga tjänster'                                 ],
+	[ 'lv_slug' => 'kontakti',                      'en_slug' => 'contact',                    'sv_slug' => 'kontakt',                      'en_title' => 'Contact',                                         'sv_title' => 'Kontakt'                                         ],
+	[ 'lv_slug' => 'pieteikuma-forma',              'en_slug' => 'application-form',           'sv_slug' => 'ansokan',                      'en_title' => 'Application form',                                'sv_title' => 'Ansökningsformulär'                              ],
 ];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -87,7 +92,8 @@ function lrm128_lv_page( ?string $slug ): ?WP_Post {
  *
  * Returns the post ID (new or existing), or 0 on failure.
  */
-function lrm128_ensure_translation( int $lv_id, string $lang, string $title, string $lv_slug ): int {
+// LRM-129: $target_slug is the language-specific slug (e.g. 'about-us' for EN).
+function lrm128_ensure_translation( int $lv_id, string $lang, string $title, string $target_slug ): int {
 	$existing = pll_get_post( $lv_id, $lang );
 	if ( $existing ) {
 		WP_CLI::log( "    [{$lang}] already exists (ID {$existing}) — skipping creation." );
@@ -95,8 +101,7 @@ function lrm128_ensure_translation( int $lv_id, string $lang, string $title, str
 	}
 
 	// Use a temp slug to avoid WP's unique-slug check renaming our page.
-	// E.g. "par-mums-en-tmp" instead of "par-mums" which WP would rename to "par-mums-2".
-	$temp_slug = $lv_slug . '-' . $lang . '-tmp';
+	$temp_slug = $target_slug . '-tmp';
 
 	$new_id = wp_insert_post( [
 		'post_type'    => 'page',
@@ -120,10 +125,8 @@ function lrm128_ensure_translation( int $lv_id, string $lang, string $title, str
 	$translations[ $lang ] = $new_id;
 	pll_save_post_translations( $translations );
 
-	// Force the correct slug (same as LV) now that the language is set.
-	// Polylang URL prefix mode disambiguates /en/par-mums/ vs /par-mums/,
-	// so same post_name across languages is intentional and correct.
-	lrm128_force_slug( $new_id, $lv_slug );
+	// Force the language-specific slug now that the language is set.
+	lrm128_force_slug( $new_id, $target_slug );
 
 	$actual_slug = get_post_field( 'post_name', $new_id );
 	WP_CLI::success( "    [{$lang}] Created '{$title}' — ID {$new_id}, slug: {$actual_slug}" );
@@ -166,14 +169,13 @@ foreach ( $pages as $def ) {
 
 	WP_CLI::log( "\n{$label}  [LV ID: {$lv_id}]" );
 
-	lrm128_ensure_translation( $lv_id, 'en', $def['en_title'], $slug );
-	lrm128_ensure_translation( $lv_id, 'sv', $def['sv_title'], $slug );
+	lrm128_ensure_translation( $lv_id, 'en', $def['en_title'], $def['en_slug'] );
+	lrm128_ensure_translation( $lv_id, 'sv', $def['sv_title'], $def['sv_slug'] );
 }
 
-// ── Fix slugs — correct any wrong slugs from previous runs ───────────────────
-// Previous runs used wp_insert_post without temp slug, so EN/SV pages may have
-// been renamed (e.g. pieteikuma-forma → pieteikuma-forma-2).  This pass ensures
-// all translations have the same slug as their LV source.
+// ── Fix slugs — enforce correct language-specific slugs on every deploy ──────
+// LRM-129: EN/SV pages now use their own slugs (about-us, om-oss, etc.)
+// rather than the LV slug. This section enforces them idempotently.
 
 WP_CLI::log( "\n=== Fixing slugs for existing translations ===" );
 
@@ -183,23 +185,23 @@ foreach ( $pages as $def ) {
 		continue;
 	}
 
-	$lv_id   = $lv_post->ID;
-	$lv_slug = $lv_post->post_name;
+	$lv_id = $lv_post->ID;
 
-	foreach ( [ 'en', 'sv' ] as $lang ) {
+	$targets = [ 'en' => $def['en_slug'], 'sv' => $def['sv_slug'] ];
+	foreach ( $targets as $lang => $target_slug ) {
 		$trans_id = pll_get_post( $lv_id, $lang );
 		if ( ! $trans_id ) {
 			continue;
 		}
 
 		$current_slug = get_post_field( 'post_name', $trans_id );
-		if ( $current_slug === $lv_slug ) {
+		if ( $current_slug === $target_slug ) {
 			WP_CLI::log( "  [{$lang}] ID {$trans_id} slug OK: {$current_slug}" );
 			continue;
 		}
 
-		lrm128_force_slug( $trans_id, $lv_slug );
-		WP_CLI::success( "  [{$lang}] ID {$trans_id}: slug fixed '{$current_slug}' → '{$lv_slug}'" );
+		lrm128_force_slug( $trans_id, $target_slug );
+		WP_CLI::success( "  [{$lang}] ID {$trans_id}: slug fixed '{$current_slug}' → '{$target_slug}'" );
 	}
 }
 

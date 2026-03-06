@@ -65,12 +65,14 @@ add_action( 'wp_enqueue_scripts', function() {
 // LRM-127: Added is_front_page() guard so homepage always uses front-page.php
 // regardless of _wp_page_template meta (Elementor Canvas was overriding it).
 // Slug map updated to canonical short slugs after service pages were renamed.
+// LRM-129: Priority 100 runs AFTER Elementor's template_include at priority 99,
+// ensuring our custom templates are never overridden by Elementor Canvas.
 add_filter( 'template_include', function( $template ) {
 	if ( ! is_page() ) {
 		return $template;
 	}
 
-	// Front page always uses front-page.php (overrides Elementor Canvas).
+	// Front page always uses front-page.php.
 	if ( is_front_page() ) {
 		$path = get_template_directory() . '/front-page.php';
 		if ( file_exists( $path ) ) {
@@ -80,9 +82,6 @@ add_filter( 'template_include', function( $template ) {
 
 	// slug → template filename for all pages that need custom templates.
 	$map = [
-		// LRM-128: 'home' is the WP slug of the front page (ID 10) and its EN/SV translations.
-		// is_front_page() is only true for the LV post; translated home pages fall through here
-		// until the 301 redirect below sends them to /en/ or /sv/.
 		'home'                              => 'front-page.php',
 		'par-mums'                          => 'page-par-mums.php',
 		'kontakti'                          => 'page-kontakti.php',
@@ -93,8 +92,8 @@ add_filter( 'template_include', function( $template ) {
 		'mezizstrades-pakalpojumi'          => 'page-mezizstrades-pakalpojumi.php',
 	];
 
-	// Resolve to the LV (default-language) post so translated pages get the
-	// same template as their original.
+	// Resolve to the LV (default-language) post so EN/SV translated pages load
+	// the same template as their LV counterpart.
 	$id = get_queried_object_id();
 	if ( function_exists( 'pll_get_post' ) ) {
 		$lv_id = pll_get_post( $id, 'lv' );
@@ -112,7 +111,7 @@ add_filter( 'template_include', function( $template ) {
 	}
 
 	return $template;
-}, 20 );
+}, 100 );
 
 // ── LRM-124: Vakances (Job Listings) ────────────────────────────────────────
 
@@ -466,10 +465,25 @@ add_filter( 'page_link', function( $url, $post_id ) {
 	return $url;
 }, 30, 2 );
 
-// LRM-128: Redirect /en/home/ → /en/ and /sv/home/ → /sv/ (301).
-// These URLs exist because Polylang stored the WP page slug in the permalink;
-// after the page_link fix above they will no longer appear in the switcher,
-// but old links/cache may still point here.
+// LRM-129: Suppress WordPress's redirect_canonical for language-root URLs.
+// Without this, /en/ → 301 → /en/home-en/ because WordPress computes the
+// canonical URL from the EN homepage page slug. We suppress any redirect when
+// the requested URL is exactly a Polylang language root (e.g. /en/ or /sv/).
+add_filter( 'redirect_canonical', function( $redirect_url, $requested_url ) {
+	if ( ! function_exists( 'pll_languages_list' ) ) {
+		return $redirect_url;
+	}
+	$path = rtrim( (string) parse_url( $requested_url, PHP_URL_PATH ), '/' );
+	foreach ( pll_languages_list( [ 'fields' => 'slug' ] ) as $slug ) {
+		if ( $path === '/' . $slug ) {
+			return false; // already at the language root — no redirect needed
+		}
+	}
+	return $redirect_url;
+}, 10, 2 );
+
+// LRM-128/129: Redirect /en/home-en/ → /en/ and /sv/hem/ → /sv/ (301).
+// Handles old bookmarks or links pointing to the slug-based URL.
 add_action( 'template_redirect', function() {
 	if ( ! is_page() || ! function_exists( 'pll_get_post_translations' ) ) {
 		return;
@@ -483,8 +497,12 @@ add_action( 'template_redirect', function() {
 	if ( in_array( $queried_id, array_values( $translations ), true ) ) {
 		$lang = pll_get_post_language( $queried_id );
 		if ( $lang && $lang !== 'lv' ) {
-			wp_redirect( home_url( '/' . $lang . '/' ), 301 );
-			exit;
+			// Only redirect if not already at the clean language root (prevents loops).
+			$request = isset( $_SERVER['REQUEST_URI'] ) ? rtrim( $_SERVER['REQUEST_URI'], '/' ) : '';
+			if ( $request !== '/' . $lang ) {
+				wp_redirect( trailingslashit( home_url( '/' . $lang ) ), 301 );
+				exit;
+			}
 		}
 	}
 } );
@@ -591,9 +609,10 @@ function vecvagari_vp_details_meta_box( $post ) {
 	<?php
 }
 
-// Pass AJAX URL to JS on the vakances page.
+// Pass AJAX URL to JS on the vakances page (LV + EN 914 + SV 915).
+// LRM-129: use page IDs so EN/SV translated pages also get the AJAX URL.
 add_action( 'wp_enqueue_scripts', function() {
-	if ( is_page( 'vakances' ) ) {
+	if ( is_page( [ 895, 914, 915 ] ) ) {
 		wp_localize_script( 'vecvagari-main', 'vecvagariApply', [
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 		] );
