@@ -81,19 +81,27 @@ function lrm128_lv_page( ?string $slug ): ?WP_Post {
  * Links the new page to its LV source and all existing sibling translations
  * via pll_save_post_translations().
  *
+ * Uses a temporary slug during wp_insert_post to avoid WP's uniqueness check
+ * (WP doesn't know about Polylang language prefixes), then forces the correct
+ * slug via $wpdb->update() after the language is set.
+ *
  * Returns the post ID (new or existing), or 0 on failure.
  */
-function lrm128_ensure_translation( int $lv_id, string $lang, string $title, string $slug ): int {
+function lrm128_ensure_translation( int $lv_id, string $lang, string $title, string $lv_slug ): int {
 	$existing = pll_get_post( $lv_id, $lang );
 	if ( $existing ) {
-		WP_CLI::log( "    [{$lang}] already exists (ID {$existing}) — skipping." );
+		WP_CLI::log( "    [{$lang}] already exists (ID {$existing}) — skipping creation." );
 		return $existing;
 	}
+
+	// Use a temp slug to avoid WP's unique-slug check renaming our page.
+	// E.g. "par-mums-en-tmp" instead of "par-mums" which WP would rename to "par-mums-2".
+	$temp_slug = $lv_slug . '-' . $lang . '-tmp';
 
 	$new_id = wp_insert_post( [
 		'post_type'    => 'page',
 		'post_title'   => $title,
-		'post_name'    => $slug,
+		'post_name'    => $temp_slug,
 		'post_status'  => 'publish',
 		'post_content' => '',
 	], true );
@@ -103,7 +111,7 @@ function lrm128_ensure_translation( int $lv_id, string $lang, string $title, str
 		return 0;
 	}
 
-	// Set language so Polylang can manage the slug correctly.
+	// Set language so Polylang manages this page in the correct language context.
 	pll_set_post_language( $new_id, $lang );
 
 	// Link this translation to the LV source (preserving any existing siblings).
@@ -112,12 +120,36 @@ function lrm128_ensure_translation( int $lv_id, string $lang, string $title, str
 	$translations[ $lang ] = $new_id;
 	pll_save_post_translations( $translations );
 
+	// Force the correct slug (same as LV) now that the language is set.
+	// Polylang URL prefix mode disambiguates /en/par-mums/ vs /par-mums/,
+	// so same post_name across languages is intentional and correct.
+	lrm128_force_slug( $new_id, $lv_slug );
+
 	$actual_slug = get_post_field( 'post_name', $new_id );
 	WP_CLI::success( "    [{$lang}] Created '{$title}' — ID {$new_id}, slug: {$actual_slug}" );
 	return $new_id;
 }
 
-// ── Main ──────────────────────────────────────────────────────────────────────
+/**
+ * Force a post_name value, bypassing WordPress's unique-slug check.
+ * Safe to use in WP-CLI scripts where we intentionally want same slugs
+ * across Polylang language-prefix URLs.
+ */
+function lrm128_force_slug( int $post_id, string $slug ): void {
+	global $wpdb;
+	$wpdb->update(
+		$wpdb->posts,
+		[ 'post_name' => $slug ],
+		[ 'ID' => $post_id ],
+		[ '%s' ],
+		[ '%d' ]
+	);
+	clean_post_cache( $post_id );
+}
+
+// ── Main — create missing translations ────────────────────────────────────────
+
+WP_CLI::log( "\n=== Creating missing EN + SV translations ===" );
 
 foreach ( $pages as $def ) {
 	$lv_post = lrm128_lv_page( $def['lv_slug'] );
@@ -136,6 +168,39 @@ foreach ( $pages as $def ) {
 
 	lrm128_ensure_translation( $lv_id, 'en', $def['en_title'], $slug );
 	lrm128_ensure_translation( $lv_id, 'sv', $def['sv_title'], $slug );
+}
+
+// ── Fix slugs — correct any wrong slugs from previous runs ───────────────────
+// Previous runs used wp_insert_post without temp slug, so EN/SV pages may have
+// been renamed (e.g. pieteikuma-forma → pieteikuma-forma-2).  This pass ensures
+// all translations have the same slug as their LV source.
+
+WP_CLI::log( "\n=== Fixing slugs for existing translations ===" );
+
+foreach ( $pages as $def ) {
+	$lv_post = lrm128_lv_page( $def['lv_slug'] );
+	if ( ! $lv_post ) {
+		continue;
+	}
+
+	$lv_id   = $lv_post->ID;
+	$lv_slug = $lv_post->post_name;
+
+	foreach ( [ 'en', 'sv' ] as $lang ) {
+		$trans_id = pll_get_post( $lv_id, $lang );
+		if ( ! $trans_id ) {
+			continue;
+		}
+
+		$current_slug = get_post_field( 'post_name', $trans_id );
+		if ( $current_slug === $lv_slug ) {
+			WP_CLI::log( "  [{$lang}] ID {$trans_id} slug OK: {$current_slug}" );
+			continue;
+		}
+
+		lrm128_force_slug( $trans_id, $lv_slug );
+		WP_CLI::success( "  [{$lang}] ID {$trans_id}: slug fixed '{$current_slug}' → '{$lv_slug}'" );
+	}
 }
 
 WP_CLI::log( '' );

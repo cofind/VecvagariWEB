@@ -382,13 +382,41 @@ add_action( 'init', function() {
  */
 function vv_t( string $lv, string $en = '', string $sv = '' ): string {
 	static $lang = null;
+	// Only cache once Polylang has resolved a non-false language (avoids caching
+	// 'false' when called too early in the request lifecycle).
 	if ( $lang === null ) {
-		$lang = function_exists( 'pll_current_language' ) ? pll_current_language() : 'lv';
+		$resolved = function_exists( 'pll_current_language' ) ? pll_current_language() : false;
+		$lang = $resolved ?: 'lv';
 	}
 	if ( $lang === 'en' && $en !== '' ) return $en;
 	if ( $lang === 'sv' && $sv !== '' ) return $sv;
 	return $lv;
 }
+
+/// LRM-128: Suppress Polylang's canonical redirect when WP resolves the LV source
+// page instead of its EN/SV translation (same slug, lower ID wins in get_page_by_path).
+// Without this, /en/par-mums/ → 301 → /par-mums/ because Polylang sees a LV post
+// at an EN-prefixed URL and assumes it needs correcting.
+add_filter( 'pll_check_canonical_url', function( $redirect_url, $language ) {
+	if ( ! function_exists( 'pll_current_language' ) || ! function_exists( 'pll_get_post' ) ) {
+		return $redirect_url;
+	}
+	$current_lang = pll_current_language();
+	if ( ! $current_lang || $current_lang === 'lv' ) {
+		return $redirect_url;
+	}
+	// Only intervene when Polylang detected a different language than the URL prefix.
+	if ( empty( $language ) || $language->slug === $current_lang ) {
+		return $redirect_url;
+	}
+	// If a translation exists for the current language, the URL is already correct —
+	// WP just happened to load the LV source. Suppress the redirect.
+	$post = get_queried_object();
+	if ( $post instanceof WP_Post && pll_get_post( $post->ID, $current_lang ) ) {
+		return false;
+	}
+	return $redirect_url;
+}, 10, 2 );
 
 // Register the 'vakance' CPT with Polylang so vacancies can be translated.
 add_filter( 'pll_get_post_types', function( $post_types ) {
