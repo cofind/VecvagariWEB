@@ -322,3 +322,220 @@ add_action( 'wp_head', function() {
 	];
 	echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
 }, 99 );
+
+// ── LRM-125: Vakances pieteikumi (Job Applications) ──────────────────────────
+
+// Register 'vakance_pieteikums' CPT (applications inbox).
+add_action( 'init', function() {
+	register_post_type( 'vakance_pieteikums', [
+		'labels' => [
+			'name'               => 'Pieteikumi',
+			'singular_name'      => 'Pieteikums',
+			'edit_item'          => 'Rediģēt pieteikumu',
+			'view_item'          => 'Skatīt pieteikumu',
+			'search_items'       => 'Meklēt pieteikumus',
+			'not_found'          => 'Pieteikumu nav',
+			'not_found_in_trash' => 'Atkritnē pieteikumu nav',
+		],
+		'public'       => false,
+		'show_ui'      => true,
+		'show_in_menu' => true,
+		'menu_icon'    => 'dashicons-groups',
+		'supports'     => [ 'title' ],
+		'capabilities' => [ 'create_posts' => 'do_not_allow' ],
+		'map_meta_cap' => true,
+	] );
+} );
+
+// Admin columns: Kandidāts | Pozīcija | E-pasts | Tālrunis | CV | Datums.
+add_filter( 'manage_vakance_pieteikums_posts_columns', function( $cols ) {
+	return [
+		'cb'          => $cols['cb'],
+		'title'       => 'Kandidāts',
+		'vp_position' => 'Pozīcija',
+		'vp_email'    => 'E-pasts',
+		'vp_phone'    => 'Tālrunis',
+		'vp_cv'       => 'CV',
+		'date'        => 'Datums',
+	];
+} );
+
+add_action( 'manage_vakance_pieteikums_posts_custom_column', function( $col, $post_id ) {
+	switch ( $col ) {
+		case 'vp_position':
+			echo esc_html( get_post_meta( $post_id, '_applied_position', true ) );
+			break;
+		case 'vp_email':
+			$e = get_post_meta( $post_id, '_applicant_email', true );
+			echo '<a href="mailto:' . esc_attr( $e ) . '">' . esc_html( $e ) . '</a>';
+			break;
+		case 'vp_phone':
+			echo esc_html( get_post_meta( $post_id, '_applicant_phone', true ) );
+			break;
+		case 'vp_cv':
+			$url = get_post_meta( $post_id, '_cv_file_url', true );
+			echo $url
+				? '<a href="' . esc_url( $url ) . '" target="_blank">&#128206; Lejupielādēt CV</a>'
+				: '<span style="color:#999">—</span>';
+			break;
+	}
+}, 10, 2 );
+
+// Detail meta box on the pieteikums edit screen.
+add_action( 'add_meta_boxes', function() {
+	add_meta_box(
+		'vp_details',
+		'Pieteikuma detaļas',
+		'vecvagari_vp_details_meta_box',
+		'vakance_pieteikums',
+		'normal',
+		'high'
+	);
+} );
+
+function vecvagari_vp_details_meta_box( $post ) {
+	$name     = get_post_meta( $post->ID, '_applicant_name', true );
+	$email    = get_post_meta( $post->ID, '_applicant_email', true );
+	$phone    = get_post_meta( $post->ID, '_applicant_phone', true );
+	$position = get_post_meta( $post->ID, '_applied_position', true );
+	$motiv    = get_post_meta( $post->ID, '_motivation', true );
+	$cv_url   = get_post_meta( $post->ID, '_cv_file_url', true );
+	?>
+	<style>
+		.vp-row { display:flex; gap:12px; margin-bottom:12px; font-size:14px; }
+		.vp-row strong { min-width:130px; color:#444; }
+		.vp-motiv { margin-top:16px; padding:14px; background:#f9f9f9; border-left:3px solid #2D5A1B; font-size:14px; line-height:1.7; white-space:pre-wrap; }
+	</style>
+	<div class="vp-row"><strong>Vārds:</strong> <?php echo esc_html( $name ); ?></div>
+	<div class="vp-row"><strong>E-pasts:</strong> <a href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a></div>
+	<div class="vp-row"><strong>Tālrunis:</strong> <?php echo esc_html( $phone ); ?></div>
+	<div class="vp-row"><strong>Pozīcija:</strong> <?php echo esc_html( $position ); ?></div>
+	<?php if ( $cv_url ) : ?>
+	<div class="vp-row"><strong>CV:</strong> <a href="<?php echo esc_url( $cv_url ); ?>" target="_blank">&#128206; Lejupielādēt CV</a></div>
+	<?php endif; ?>
+	<?php if ( $motiv ) : ?>
+	<div class="vp-motiv"><?php echo esc_html( $motiv ); ?></div>
+	<?php endif; ?>
+	<?php
+}
+
+// Pass AJAX URL to JS on the vakances page.
+add_action( 'wp_enqueue_scripts', function() {
+	if ( is_page( 'vakances' ) ) {
+		wp_localize_script( 'vecvagari-main', 'vecvagariApply', [
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+		] );
+	}
+}, 20 );
+
+// AJAX handler — process job application form submission.
+add_action( 'wp_ajax_nopriv_vakance_apply', 'vecvagari_handle_vakance_apply' );
+add_action( 'wp_ajax_vakance_apply',        'vecvagari_handle_vakance_apply' );
+
+function vecvagari_handle_vakance_apply() {
+	// Verify nonce.
+	$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+	if ( ! wp_verify_nonce( $nonce, 'vakance_apply' ) ) {
+		wp_send_json_error( [ 'message' => 'Drošības kļūda. Lūdzu, atsvaidziniet lapu un mēģiniet vēlreiz.' ], 403 );
+	}
+
+	// Sanitize fields.
+	$name     = sanitize_text_field( wp_unslash( $_POST['applicant_name']  ?? '' ) );
+	$email    = sanitize_email( wp_unslash( $_POST['applicant_email'] ?? '' ) );
+	$phone    = sanitize_text_field( wp_unslash( $_POST['applicant_phone'] ?? '' ) );
+	$position = sanitize_text_field( wp_unslash( $_POST['position']        ?? '' ) );
+	$post_id  = absint( $_POST['post_id'] ?? 0 );
+	$motiv    = sanitize_textarea_field( wp_unslash( $_POST['motivation']   ?? '' ) );
+	$gdpr     = ! empty( $_POST['gdpr_consent'] );
+
+	// Validate required text fields.
+	$errors = [];
+	if ( empty( $name ) )                          $errors[] = 'Lūdzu, ievadiet vārdu un uzvārdu.';
+	if ( empty( $email ) || ! is_email( $email ) ) $errors[] = 'Lūdzu, ievadiet derīgu e-pasta adresi.';
+	if ( empty( $phone ) )                         $errors[] = 'Lūdzu, ievadiet tālruņa numuru.';
+	if ( empty( $position ) )                      $errors[] = 'Pozīcija nav norādīta.';
+	if ( ! $gdpr )                                 $errors[] = 'Lūdzu, apstipriniet piekrišanu datu apstrādei.';
+
+	// Validate CV file.
+	$cv_file_present = isset( $_FILES['cv_file'] ) && $_FILES['cv_file']['error'] !== UPLOAD_ERR_NO_FILE;
+	if ( ! $cv_file_present ) {
+		$errors[] = 'Lūdzu, pievienojiet CV failu.';
+	} elseif ( $_FILES['cv_file']['error'] !== UPLOAD_ERR_OK ) {
+		$errors[] = 'Faila augšupielāde neizdevās. Mēģiniet vēlreiz.';
+	} else {
+		if ( $_FILES['cv_file']['size'] > 5 * 1024 * 1024 ) {
+			$errors[] = 'CV fails pārsniedz 5 MB ierobežojumu.';
+		}
+		$ext_check = wp_check_filetype( $_FILES['cv_file']['name'] );
+		$allowed   = [ 'pdf', 'doc', 'docx' ];
+		if ( empty( $ext_check['ext'] ) || ! in_array( $ext_check['ext'], $allowed, true ) ) {
+			$errors[] = 'Atļauts tikai PDF, DOC vai DOCX formāts.';
+		}
+	}
+
+	if ( $errors ) {
+		wp_send_json_error( [ 'message' => implode( ' ', $errors ) ] );
+	}
+
+	// Upload CV file.
+	if ( ! function_exists( 'wp_handle_upload' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+	}
+	$upload = wp_handle_upload( $_FILES['cv_file'], [ 'test_form' => false ] );
+	if ( isset( $upload['error'] ) ) {
+		wp_send_json_error( [ 'message' => 'Faila saglabāšana neizdevās: ' . $upload['error'] ] );
+	}
+	$cv_url  = $upload['url'];
+	$cv_path = $upload['file'];
+
+	// Create CPT entry.
+	wp_insert_post( [
+		'post_type'   => 'vakance_pieteikums',
+		'post_title'  => $name . ' — ' . $position . ' — ' . date_i18n( 'd.m.Y' ),
+		'post_status' => 'publish',
+		'meta_input'  => [
+			'_applicant_name'   => $name,
+			'_applicant_email'  => $email,
+			'_applicant_phone'  => $phone,
+			'_applied_position' => $position,
+			'_vakance_post_id'  => $post_id,
+			'_motivation'       => $motiv,
+			'_cv_file_url'      => $cv_url,
+		],
+	] );
+
+	// Notification email to HR.
+	$hr_body = "Jauns kandidāts ir pieteicies.\n\n"
+		. "Vakance:    {$position}\n"
+		. "Vārds:      {$name}\n"
+		. "E-pasts:    {$email}\n"
+		. "Tālrunis:   {$phone}\n"
+		. ( $motiv ? "Motivācija: {$motiv}\n" : '' )
+		. "\nCV: {$cv_url}\n\n"
+		. 'Pieteikums saņemts: ' . date_i18n( 'd.m.Y \p\l\k\s\t\. H:i' );
+	wp_mail(
+		'vakances@vecvagari.com',
+		'Jauns pieteikums: ' . $position . ' — ' . $name,
+		$hr_body,
+		[ 'Content-Type: text/plain; charset=UTF-8' ],
+		$cv_path ? [ $cv_path ] : []
+	);
+
+	// Auto-reply to candidate.
+	$candidate_body = "Labdien, {$name}!\n\n"
+		. "Paldies par interesi par vakanci \"{$position}\" uzņēmumā SIA Vecvagari M.\n\n"
+		. "Esam saņēmuši Jūsu pieteikumu un izskatīsim to tuvākajā laikā. "
+		. "Ja radīsies jautājumi, sazinieties ar mums: vakances@vecvagari.com\n\n"
+		. "Ar cieņu,\nSIA Vecvagari M";
+	wp_mail(
+		$email,
+		'Paldies par pieteikumu — Vecvagari M',
+		$candidate_body,
+		[
+			'Content-Type: text/plain; charset=UTF-8',
+			'From: Vecvagari M Vakances <vakances@vecvagari.com>',
+		]
+	);
+
+	wp_send_json_success( [ 'message' => 'Pieteikums veiksmīgi iesniegts.' ] );
+}

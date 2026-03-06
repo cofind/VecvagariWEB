@@ -1,5 +1,6 @@
 /* LRM-112 / LRM-116: Nav — hamburger drawer, scroll header, submenu
-   LRM-119: Stats count-up + service card scroll reveal */
+   LRM-119: Stats count-up + service card scroll reveal
+   LRM-125: Application modal */
 (function () {
 	'use strict';
 
@@ -112,6 +113,95 @@
 			}, { threshold: 0.5 });
 
 			statNums.forEach(function (el) { statsObs.observe(el); });
+		}
+
+		// ── LRM-125: Application modal ────────────────────────────────────
+		var applyModal    = document.getElementById('apply-modal');
+		var applyForm     = document.getElementById('apply-modal-form');
+		var applySuccess  = document.getElementById('apply-modal-success');
+		var applyError    = document.getElementById('apply-modal-error');
+		var positionLabel = document.getElementById('apply-modal-position-label');
+		var positionInput = document.getElementById('apply-position');
+		var postIdInput   = document.getElementById('apply-post-id');
+
+		if (applyModal) {
+			function openApplyModal(position, postId) {
+				if (positionLabel) positionLabel.textContent = position;
+				if (positionInput) positionInput.value = position;
+				if (postIdInput)   postIdInput.value   = postId;
+				// Reset form state.
+				if (applyForm) { applyForm.reset(); applyForm.hidden = false; }
+				if (applySuccess) applySuccess.hidden = true;
+				if (applyError)   { applyError.hidden = true; applyError.textContent = ''; }
+				var submitBtn = applyForm && applyForm.querySelector('.apply-modal__submit');
+				var spinner   = applyForm && applyForm.querySelector('.apply-modal__spinner');
+				if (submitBtn) submitBtn.disabled = false;
+				if (spinner)   spinner.hidden = true;
+				applyModal.removeAttribute('hidden');
+				document.body.style.overflow = 'hidden';
+				var cb = applyModal.querySelector('.apply-modal__close');
+				if (cb) cb.focus();
+			}
+
+			function closeApplyModal() {
+				applyModal.setAttribute('hidden', '');
+				document.body.style.overflow = '';
+			}
+
+			// Open on card button click.
+			document.querySelectorAll('.vakance-apply-btn').forEach(function (btn) {
+				btn.addEventListener('click', function () {
+					openApplyModal(btn.dataset.position || '', btn.dataset.postId || '');
+				});
+			});
+
+			// Close on X, overlay, or Escape.
+			var applyCloseBtn = applyModal.querySelector('.apply-modal__close');
+			var applyOverlay  = applyModal.querySelector('.apply-modal__overlay');
+			if (applyCloseBtn) applyCloseBtn.addEventListener('click', closeApplyModal);
+			if (applyOverlay)  applyOverlay.addEventListener('click', closeApplyModal);
+			document.addEventListener('keydown', function (e) {
+				if (e.key === 'Escape' && !applyModal.hasAttribute('hidden')) closeApplyModal();
+			});
+
+			// Submit via fetch (multipart/form-data carries the CV file).
+			if (applyForm) {
+				applyForm.addEventListener('submit', function (e) {
+					e.preventDefault();
+					if (applyError) { applyError.hidden = true; applyError.textContent = ''; }
+					var submitBtn = applyForm.querySelector('.apply-modal__submit');
+					var spinner   = applyForm.querySelector('.apply-modal__spinner');
+					if (submitBtn) submitBtn.disabled = true;
+					if (spinner)   spinner.hidden = false;
+
+					var data    = new FormData(applyForm);
+					var ajaxUrl = (window.vecvagariApply && window.vecvagariApply.ajaxurl)
+						? window.vecvagariApply.ajaxurl
+						: '/wp-admin/admin-ajax.php';
+
+					fetch(ajaxUrl, { method: 'POST', body: data })
+						.then(function (r) { return r.json(); })
+						.then(function (res) {
+							if (res.success) {
+								if (applyForm)    applyForm.hidden = true;
+								if (applySuccess) applySuccess.hidden = false;
+							} else {
+								var msg = (res.data && res.data.message) ? res.data.message : 'Kļūda. Mēģiniet vēlreiz.';
+								if (applyError) { applyError.textContent = msg; applyError.hidden = false; }
+								if (submitBtn) submitBtn.disabled = false;
+								if (spinner)   spinner.hidden = true;
+							}
+						})
+						.catch(function () {
+							if (applyError) {
+								applyError.textContent = 'Savienojuma kļūda. Lūdzu, mēģiniet vēlreiz.';
+								applyError.hidden = false;
+							}
+							if (submitBtn) submitBtn.disabled = false;
+							if (spinner)   spinner.hidden = true;
+						});
+				});
+			}
 		}
 
 		// ── LRM-124: Vakances accordion toggle ───────────────────────────

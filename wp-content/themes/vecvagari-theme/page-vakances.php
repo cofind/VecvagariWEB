@@ -1,6 +1,7 @@
 <?php
 /**
  * LRM-124: Vakances — job listings page.
+ * LRM-125: Application modal added — each card triggers inline form.
  *
  * Loaded automatically for the page with slug "vakances".
  * Queries published vakance posts where expiry date >= today.
@@ -62,7 +63,6 @@ $vakances = get_posts( [
 						$piedavajam    = get_post_meta( $vak->ID, 'vak_piedavajam', true );
 						$kontakts      = get_post_meta( $vak->ID, 'vak_kontakts', true );
 						$has_details   = $apraksts || $prasibas || $piedavajam || $kontakts;
-						$apply_url     = add_query_arg( 'amats', rawurlencode( $vak->post_title ), home_url( '/pieteikuma-forma/' ) );
 						$details_id    = 'vak-details-' . absint( $vak->ID );
 					?>
 					<article class="vv-vak-card" role="listitem">
@@ -108,9 +108,13 @@ $vakances = get_posts( [
 								<svg class="vv-vak-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
 							</button>
 							<?php endif; ?>
-							<a href="<?php echo esc_url( $apply_url ); ?>" class="vv-vak-btn vv-vak-btn--apply">
+							<button
+								type="button"
+								class="vakance-apply-btn vv-vak-btn vv-vak-btn--apply"
+								data-position="<?php echo esc_attr( $vak->post_title ); ?>"
+								data-post-id="<?php echo absint( $vak->ID ); ?>">
 								Pieteikties &rarr;
-							</a>
+							</button>
 						</div>
 
 						<?php if ( $has_details ) : ?>
@@ -161,5 +165,71 @@ $vakances = get_posts( [
 	</section>
 
 </main>
+
+<!-- ── LRM-125: Application modal ── -->
+<div id="apply-modal" class="apply-modal" role="dialog" aria-modal="true" aria-labelledby="apply-modal-title" hidden>
+	<div class="apply-modal__overlay"></div>
+	<div class="apply-modal__card">
+		<button type="button" class="apply-modal__close" aria-label="Aizvērt">&times;</button>
+		<h2 id="apply-modal-title" class="apply-modal__title">
+			Pieteikties: <span id="apply-modal-position-label"></span>
+		</h2>
+
+		<div id="apply-modal-success" class="apply-modal__success" hidden>
+			<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+			<h3>Paldies par pieteikumu!</h3>
+			<p>Esam saņēmuši Jūsu pieteikumu un sazināsimies ar Jums tuvākajā laikā.</p>
+		</div>
+
+		<form id="apply-modal-form" class="apply-modal__form" enctype="multipart/form-data" novalidate>
+			<input type="hidden" name="action" value="vakance_apply">
+			<input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( 'vakance_apply' ) ); ?>">
+			<input type="hidden" name="position" id="apply-position" value="">
+			<input type="hidden" name="post_id" id="apply-post-id" value="">
+
+			<div class="apply-modal__field">
+				<label for="apply-name">Vārds, Uzvārds <span aria-hidden="true">*</span></label>
+				<input type="text" id="apply-name" name="applicant_name" required autocomplete="name" placeholder="Piem., Jānis Bērziņš">
+			</div>
+
+			<div class="apply-modal__field">
+				<label for="apply-email">E-pasts <span aria-hidden="true">*</span></label>
+				<input type="email" id="apply-email" name="applicant_email" required autocomplete="email" placeholder="jums@piemers.lv">
+			</div>
+
+			<div class="apply-modal__field">
+				<label for="apply-phone">Tālrunis <span aria-hidden="true">*</span></label>
+				<input type="tel" id="apply-phone" name="applicant_phone" required autocomplete="tel" placeholder="+371 2X XXX XXX">
+			</div>
+
+			<div class="apply-modal__field">
+				<label for="apply-motivation">Motivācijas vēstule</label>
+				<textarea id="apply-motivation" name="motivation" rows="4" placeholder="Pastāstiet, kāpēc interesē šī vakance…"></textarea>
+			</div>
+
+			<div class="apply-modal__field">
+				<label for="apply-cv">CV (fails) <span aria-hidden="true">*</span></label>
+				<input type="file" id="apply-cv" name="cv_file" required accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+				<p class="apply-modal__field-hint">PDF, DOC vai DOCX &middot; maks. 5 MB</p>
+			</div>
+
+			<div class="apply-modal__field apply-modal__field--checkbox">
+				<label>
+					<input type="checkbox" name="gdpr_consent" value="1" required>
+					Piekrītu savu datu apstrādei atbilstoši <a href="/privatuma-politika/" target="_blank">Privātuma politikai</a> <span aria-hidden="true">*</span>
+				</label>
+			</div>
+
+			<div class="apply-modal__error" id="apply-modal-error" hidden></div>
+
+			<button type="submit" class="apply-modal__submit">
+				Iesniegt pieteikumu
+				<span class="apply-modal__spinner" hidden>
+					<svg class="apply-modal__spin-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>
+				</span>
+			</button>
+		</form>
+	</div>
+</div>
 
 <?php get_footer(); ?>
