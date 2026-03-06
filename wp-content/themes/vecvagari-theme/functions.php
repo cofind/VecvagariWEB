@@ -399,50 +399,51 @@ function vv_t( string $lv, string $en = '', string $sv = '' ): string {
 
 /**
  * LRM-128: Language-aware URL helper.
- * Replaces home_url('/slug/') in all templates so internal links stay in the
- * current Polylang language (e.g. /en/par-mums/ instead of /par-mums/).
+ * Accepts an LV-language path (e.g. '/par-mums/') and returns the full URL
+ * for the current Polylang language, resolving to the translated page's slug
+ * (e.g. /en/about-us/ or /sv/om-oss/) via get_page_by_path + pll_get_post.
+ * Falls back to a plain prefix-prepend when Polylang is not active.
  *
- * @param string $path Site-root-relative path, e.g. '/par-mums/' or '/'.
- * @return string Full URL with the language prefix prepended when not LV.
+ * @param string $path LV site-root-relative path, e.g. '/par-mums/' or '/'.
+ * @return string Full URL for the current language.
  */
 function vv_url( string $path ): string {
-	static $prefix = null;
-	if ( $prefix === null ) {
+	static $lang = null;
+	if ( $lang === null ) {
 		$resolved = function_exists( 'pll_current_language' ) ? pll_current_language() : false;
 		$lang     = $resolved ?: 'lv';
-		$prefix   = ( $lang === 'lv' ) ? '' : '/' . $lang;
 	}
+
 	$path = '/' . ltrim( $path, '/' );
+
+	// Homepage.
 	if ( $path === '/' ) {
-		return trailingslashit( home_url( $prefix ?: '/' ) );
+		if ( $lang === 'lv' ) {
+			return trailingslashit( home_url( '/' ) );
+		}
+		return trailingslashit( home_url( '/' . $lang ) );
 	}
+
+	// LRM-128: For non-LV languages, resolve via Polylang so we get the
+	// translated slug (e.g. /en/about-us/ instead of /en/par-mums/).
+	if ( $lang !== 'lv' && function_exists( 'pll_get_post' ) ) {
+		$lv_slug = trim( $path, '/' );
+		$lv_page = get_page_by_path( $lv_slug );
+		if ( $lv_page ) {
+			$translated_id = pll_get_post( $lv_page->ID, $lang );
+			if ( $translated_id ) {
+				$permalink = get_permalink( $translated_id );
+				if ( $permalink ) {
+					return $permalink;
+				}
+			}
+		}
+	}
+
+	// LV or fallback.
+	$prefix = ( $lang === 'lv' ) ? '' : '/' . $lang;
 	return home_url( $prefix . $path );
 }
-
-/// LRM-128: Suppress Polylang's canonical redirect when WP resolves the LV source
-// page instead of its EN/SV translation (same slug, lower ID wins in get_page_by_path).
-// Without this, /en/par-mums/ → 301 → /par-mums/ because Polylang sees a LV post
-// at an EN-prefixed URL and assumes it needs correcting.
-add_filter( 'pll_check_canonical_url', function( $redirect_url, $language ) {
-	if ( ! function_exists( 'pll_current_language' ) || ! function_exists( 'pll_get_post' ) ) {
-		return $redirect_url;
-	}
-	$current_lang = pll_current_language();
-	if ( ! $current_lang || $current_lang === 'lv' ) {
-		return $redirect_url;
-	}
-	// Only intervene when Polylang detected a different language than the URL prefix.
-	if ( empty( $language ) || $language->slug === $current_lang ) {
-		return $redirect_url;
-	}
-	// If a translation exists for the current language, the URL is already correct —
-	// WP just happened to load the LV source. Suppress the redirect.
-	$post = get_queried_object();
-	if ( $post instanceof WP_Post && pll_get_post( $post->ID, $current_lang ) ) {
-		return false;
-	}
-	return $redirect_url;
-}, 10, 2 );
 
 // LRM-128: Fix get_permalink() for translated front pages so pll_the_languages()
 // returns /en/ and /sv/ for the language switcher instead of /en/home/ and /sv/home/.
