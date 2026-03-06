@@ -49,13 +49,11 @@ get_header();
 				) ); ?></p>
 			</div>
 
+			<?php if ( has_post_thumbnail() ) : ?>
 			<figure class="vv-sp-media">
-				<?php if ( has_post_thumbnail() ) : ?>
-					<?php the_post_thumbnail( 'large', [ 'alt' => esc_attr( vv_t( 'Vecvagari M komanda', 'Vecvagari M team', 'Vecvagari M team' ) ) ] ); ?>
-				<?php else : ?>
-					<p class="vv-sp-media-placeholder"><?php echo esc_html( vv_t( 'Uzņēmuma foto', 'Company photo', 'Företagsfoto' ) ); ?></p>
-				<?php endif; ?>
+				<?php the_post_thumbnail( 'large', [ 'alt' => esc_attr( vv_t( 'Vecvagari M komanda', 'Vecvagari M team', 'Vecvagari M team' ) ) ] ); ?>
 			</figure>
+			<?php endif; // LRM-127: no placeholder shown when image not set ?>
 
 		</div>
 	</section>

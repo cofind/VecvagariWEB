@@ -279,6 +279,9 @@ ul, ol { padding-left: 1.4em; }
 	background: rgba(255,255,255,.12);
 }
 
+/* ── Dropdown arrow icon ── */
+.vv-nav__arrow { font-size: 0.55em; vertical-align: middle; opacity: 0.7; }
+
 /* ── Desktop dropdown (.sub-menu) ── */
 .vv-nav__list .sub-menu {
 	display: none;
@@ -1901,7 +1904,8 @@ ul, ol { padding-left: 1.4em; }
 	align-items: center;
 	justify-content: center;
 }
-.apply-modal[hidden] { display: none; }
+/* LRM-127: !important prevents display:flex above from overriding hidden attr */
+.apply-modal[hidden] { display: none !important; }
 
 .apply-modal__overlay {
 	position: absolute;

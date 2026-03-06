@@ -80,6 +80,13 @@
 			});
 		});
 
+		// ── LRM-127: Prevent # href navigation on PAKALPOJUMI parent ────
+		nav.querySelectorAll('.menu-item-has-children > a[href="#"]').forEach(function (link) {
+			link.addEventListener('click', function (e) {
+				e.preventDefault();
+			});
+		});
+
 		// ── LRM-119: Stats count-up on scroll ────────────────────────────
 		var statNums = document.querySelectorAll('.vv-stat__num');
 		if (statNums.length && 'IntersectionObserver' in window) {

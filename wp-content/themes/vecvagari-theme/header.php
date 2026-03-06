@@ -32,17 +32,26 @@
 			</button>
 
 			<?php
+			// LRM-127: Fallback nav — PAKALPOJUMI dropdown with 3 service pages nested.
 			wp_nav_menu( [
 				'theme_location' => 'primary',
 				'menu_class'     => 'vv-nav__list',
 				'container'      => false,
 				'fallback_cb'    => function() {
-					$lang = function_exists( 'pll_current_language' ) ? pll_current_language() : 'lv';
+					$slug           = get_post_field( 'post_name', get_queried_object_id() );
+					$service_slugs  = [ 'meza-ipasumu-pirksana', 'cirsmu-un-sortimentu-pirksana', 'mezizstrades-pakalpojumi' ];
+					$in_services    = in_array( $slug, $service_slugs, true );
+					$svc_cls        = $in_services ? ' current-menu-parent' : '';
 					echo '<ul class="vv-nav__list">';
 					echo '<li><a href="' . esc_url( home_url( '/par-mums/' ) ) . '">' . esc_html( vv_t( 'Par mums', 'About us', 'Om oss' ) ) . '</a></li>';
-					echo '<li><a href="' . esc_url( home_url( '/meza-ipasumu-pirksana/' ) ) . '">' . esc_html( vv_t( 'Meža īpašumi', 'Forest properties', 'Skogsfastigheter' ) ) . '</a></li>';
-					echo '<li><a href="' . esc_url( home_url( '/cirsmu-un-sortimentu-pirksana/' ) ) . '">' . esc_html( vv_t( 'Cirsmas', 'Felling sites', 'Avverkningsplatser' ) ) . '</a></li>';
-					echo '<li><a href="' . esc_url( home_url( '/mezizstrades-pakalpojumi/' ) ) . '">' . esc_html( vv_t( 'Mežizstrāde', 'Forestry', 'Skogsbruk' ) ) . '</a></li>';
+					echo '<li class="menu-item-has-children' . $svc_cls . '">';
+					echo '<a href="#">' . esc_html( vv_t( 'Pakalpojumi', 'Services', 'Tjänster' ) ) . ' <span class="vv-nav__arrow" aria-hidden="true">&#9660;</span></a>';
+					echo '<ul class="sub-menu">';
+					echo '<li><a href="' . esc_url( home_url( '/meza-ipasumu-pirksana/' ) ) . '">' . esc_html( vv_t( 'Meža īpašumu pirkšana', 'Forest property purchase', 'Köp av skogsfastigheter' ) ) . '</a></li>';
+					echo '<li><a href="' . esc_url( home_url( '/cirsmu-un-sortimentu-pirksana/' ) ) . '">' . esc_html( vv_t( 'Cirsmu un sortimentu pirkšana', 'Felling sites purchase', 'Köp av avverkningsplatser' ) ) . '</a></li>';
+					echo '<li><a href="' . esc_url( home_url( '/mezizstrades-pakalpojumi/' ) ) . '">' . esc_html( vv_t( 'Mežizstrādes pakalpojumi', 'Forestry services', 'Skogstjänster' ) ) . '</a></li>';
+					echo '</ul>';
+					echo '</li>';
 					echo '<li><a href="' . esc_url( home_url( '/vakances/' ) ) . '">' . esc_html( vv_t( 'Vakances', 'Vacancies', 'Lediga tjänster' ) ) . '</a></li>';
 					echo '<li><a href="' . esc_url( home_url( '/kontakti/' ) ) . '">' . esc_html( vv_t( 'Kontakti', 'Contact', 'Kontakt' ) ) . '</a></li>';
 					echo '</ul>';
@@ -58,7 +67,9 @@
 
 		<!-- LRM-126: Language switcher -->
 		<?php
-		$pll_langs = function_exists( 'pll_the_languages' ) ? pll_the_languages( [ 'raw' => 1, 'hide_if_empty' => 0 ] ) : [];
+		// LRM-127: hide_if_no_translation=0 ensures all 3 flags always show,
+		// even on pages where a translation hasn't been linked yet.
+		$pll_langs = function_exists( 'pll_the_languages' ) ? pll_the_languages( [ 'raw' => 1, 'hide_if_empty' => 0, 'hide_if_no_translation' => 0 ] ) : [];
 		if ( $pll_langs ) :
 			// Flag emoji map: locale slug → flag.
 			$flags = [ 'lv' => '🇱🇻', 'en' => '🇬🇧', 'sv' => '🇸🇪' ];
