@@ -18,5 +18,7 @@ jobs:
           script: |
             cd /var/www/html
             git pull origin main
-            # Optional: clear Elementor cache after deploy
+            # LRM-128: Create EN + SV translated pages (idempotent — safe to run on every deploy)
+            wp eval-file bin/setup-translations.php --allow-root
+            wp rewrite flush --allow-root
             wp cache flush --allow-root
