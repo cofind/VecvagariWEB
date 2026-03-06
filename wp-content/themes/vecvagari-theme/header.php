@@ -37,12 +37,14 @@
 				'menu_class'     => 'vv-nav__list',
 				'container'      => false,
 				'fallback_cb'    => function() {
+					$lang = function_exists( 'pll_current_language' ) ? pll_current_language() : 'lv';
 					echo '<ul class="vv-nav__list">';
-					echo '<li><a href="' . esc_url( home_url( '/par-mums/' ) ) . '">Par mums</a></li>';
-					echo '<li><a href="' . esc_url( home_url( '/meza-ipasumu-pirksana/' ) ) . '">Meža īpašumi</a></li>';
-					echo '<li><a href="' . esc_url( home_url( '/cirsmu-un-sortimentu-pirksana/' ) ) . '">Cirsmas</a></li>';
-					echo '<li><a href="' . esc_url( home_url( '/mezizstrades-pakalpojumi/' ) ) . '">Mežizstrāde</a></li>';
-					echo '<li><a href="' . esc_url( home_url( '/kontakti/' ) ) . '">Kontakti</a></li>';
+					echo '<li><a href="' . esc_url( home_url( '/par-mums/' ) ) . '">' . esc_html( vv_t( 'Par mums', 'About us', 'Om oss' ) ) . '</a></li>';
+					echo '<li><a href="' . esc_url( home_url( '/meza-ipasumu-pirksana/' ) ) . '">' . esc_html( vv_t( 'Meža īpašumi', 'Forest properties', 'Skogsfastigheter' ) ) . '</a></li>';
+					echo '<li><a href="' . esc_url( home_url( '/cirsmu-un-sortimentu-pirksana/' ) ) . '">' . esc_html( vv_t( 'Cirsmas', 'Felling sites', 'Avverkningsplatser' ) ) . '</a></li>';
+					echo '<li><a href="' . esc_url( home_url( '/mezizstrades-pakalpojumi/' ) ) . '">' . esc_html( vv_t( 'Mežizstrāde', 'Forestry', 'Skogsbruk' ) ) . '</a></li>';
+					echo '<li><a href="' . esc_url( home_url( '/vakances/' ) ) . '">' . esc_html( vv_t( 'Vakances', 'Vacancies', 'Lediga tjänster' ) ) . '</a></li>';
+					echo '<li><a href="' . esc_url( home_url( '/kontakti/' ) ) . '">' . esc_html( vv_t( 'Kontakti', 'Contact', 'Kontakt' ) ) . '</a></li>';
 					echo '</ul>';
 				},
 			] );
@@ -51,8 +53,33 @@
 
 		<!-- CTA button (desktop) -->
 		<a href="<?php echo esc_url( home_url( '/pieteikuma-forma/' ) ); ?>" class="vv-header__cta">
-			Pieteikties
+			<?php echo esc_html( vv_t( 'Pieteikties', 'Apply', 'Ansök' ) ); ?>
 		</a>
+
+		<!-- LRM-126: Language switcher -->
+		<?php
+		$pll_langs = function_exists( 'pll_the_languages' ) ? pll_the_languages( [ 'raw' => 1, 'hide_if_empty' => 0 ] ) : [];
+		if ( $pll_langs ) :
+			// Flag emoji map: locale slug → flag.
+			$flags = [ 'lv' => '🇱🇻', 'en' => '🇬🇧', 'sv' => '🇸🇪' ];
+		?>
+		<div class="vv-lang-switcher" role="navigation" aria-label="Language switcher">
+			<?php foreach ( $pll_langs as $l ) :
+				$code = esc_html( strtoupper( $l['slug'] ) );
+				$flag = $flags[ $l['slug'] ] ?? '';
+			?>
+				<?php if ( $l['current_lang'] ) : ?>
+					<span class="vv-lang-switcher__item vv-lang-switcher__item--active" aria-current="true">
+						<?php echo $flag; ?> <?php echo $code; ?>
+					</span>
+				<?php else : ?>
+					<a href="<?php echo esc_url( $l['url'] ); ?>" class="vv-lang-switcher__item" hreflang="<?php echo esc_attr( $l['locale'] ); ?>">
+						<?php echo $flag; ?> <?php echo $code; ?>
+					</a>
+				<?php endif; ?>
+			<?php endforeach; ?>
+		</div>
+		<?php endif; ?>
 
 		<!-- Hamburger (mobile) -->
 		<button class="vv-hamburger" aria-controls="site-navigation" aria-expanded="false" aria-label="<?php esc_attr_e( 'Atvērt izvēlni', 'vecvagari-theme' ); ?>">

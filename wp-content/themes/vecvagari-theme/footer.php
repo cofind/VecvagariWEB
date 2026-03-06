@@ -2,19 +2,20 @@
 /**
  * LRM-112: Site footer.
  * LRM-120: Redesign — 3-column, dark forest bg, amber accents, social icons.
+ * LRM-126: Multilingual — all strings wrapped in vv_t().
  *
  * @package VecvagariTheme
  */
 ?>
 
 <?php if ( is_front_page() ) : ?>
-<section class="vv-cta-strip" aria-label="Aicinājums rīkoties">
+<section class="vv-cta-strip" aria-label="<?php echo esc_attr( vv_t( 'Aicinājums rīkoties', 'Call to action', 'Uppmaning till handling' ) ); ?>">
 	<div class="vv-cta-inner">
-		<h2 class="vv-cta-heading">Interesē meža īpašumu pārdošana vai mežizstrādes pakalpojums?</h2>
-		<p class="vv-cta-sub">Sazinieties ar mums &mdash; novērtēšana un konsultācija bez maksas.</p>
+		<h2 class="vv-cta-heading"><?php echo esc_html( vv_t( 'Interesē meža īpašumu pārdošana vai mežizstrādes pakalpojums?', 'Interested in selling forest property or forestry services?', 'Intresserad av att sälja skogsfastighet eller skogstjänster?' ) ); ?></h2>
+		<p class="vv-cta-sub"><?php echo esc_html( vv_t( 'Sazinieties ar mums — novērtēšana un konsultācija bez maksas.', 'Contact us — valuation and consultation is free.', 'Kontakta oss — värdering och konsultation är gratis.' ) ); ?></p>
 		<div class="vv-cta-buttons">
 			<a href="<?php echo esc_url( home_url( '/pieteikuma-forma/' ) ); ?>" class="vv-cta-btn vv-cta-btn--primary">
-				PIETEIKT PAKALPOJUMU &rarr;
+				<?php echo esc_html( vv_t( 'PIETEIKT PAKALPOJUMU →', 'APPLY FOR SERVICE →', 'ANSÖK OM TJÄNST →' ) ); ?>
 			</a>
 			<a href="tel:+37125590827" class="vv-cta-btn vv-cta-btn--outline">
 				+371 25590827
@@ -45,10 +46,10 @@
 				</div>
 
 				<p class="vv-footer-tagline">
-					<em>Mežizstrāde Kurzemē un Zemgalē kopš 2005</em>
+					<em><?php echo esc_html( vv_t( 'Mežizstrāde Kurzemē un Zemgalē kopš 2005', 'Forestry in Kurzeme and Zemgale since 2005', 'Skogsbruk i Kurzeme och Zemgale sedan 2005' ) ); ?></em>
 				</p>
 
-				<ul class="vv-footer-contact-list" aria-label="Adrese">
+				<ul class="vv-footer-contact-list" aria-label="<?php echo esc_attr( vv_t( 'Adrese', 'Address', 'Adress' ) ); ?>">
 					<li class="vv-footer-contact-item">
 						<span class="vv-footer-contact-icon" aria-hidden="true">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -61,27 +62,27 @@
 
 			<!-- ── Col 2: Quick links ── -->
 			<div class="vv-footer-col vv-footer-nav">
-				<h4 class="vv-footer-heading">NODERĪGI</h4>
+				<h4 class="vv-footer-heading"><?php echo esc_html( vv_t( 'NODERĪGI', 'USEFUL LINKS', 'ANVÄNDBARA LÄNKAR' ) ); ?></h4>
 				<ul class="vv-footer-links">
-					<li><a href="<?php echo esc_url( home_url( '/par-mums/' ) ); ?>">Par mums</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/meza-ipasumu-pirksana/' ) ); ?>">Meža īpašumu pirkšana</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/cirsmu-un-sortimentu-pirksana/' ) ); ?>">Cirsmu un sortimentu pirkšana</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/mezizstrades-pakalpojumi/' ) ); ?>">Mežizstrādes pakalpojumi</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/pieteikuma-forma/' ) ); ?>">Pieteikuma forma</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/kontakti/' ) ); ?>">Kontakti</a></li>
+					<li><a href="<?php echo esc_url( home_url( '/par-mums/' ) ); ?>"><?php echo esc_html( vv_t( 'Par mums', 'About us', 'Om oss' ) ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/meza-ipasumu-pirksana/' ) ); ?>"><?php echo esc_html( vv_t( 'Meža īpašumu pirkšana', 'Forest property purchase', 'Köp av skogsfastigheter' ) ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/cirsmu-un-sortimentu-pirksana/' ) ); ?>"><?php echo esc_html( vv_t( 'Cirsmu un sortimentu pirkšana', 'Felling sites purchase', 'Köp av avverkningsplatser' ) ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/mezizstrades-pakalpojumi/' ) ); ?>"><?php echo esc_html( vv_t( 'Mežizstrādes pakalpojumi', 'Forestry services', 'Skogstjänster' ) ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/pieteikuma-forma/' ) ); ?>"><?php echo esc_html( vv_t( 'Pieteikuma forma', 'Application form', 'Ansökningsblankett' ) ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/kontakti/' ) ); ?>"><?php echo esc_html( vv_t( 'Kontakti', 'Contact', 'Kontakt' ) ); ?></a></li>
 				</ul>
 			</div>
 
 			<!-- ── Col 3: Contact + Social ── -->
 			<div class="vv-footer-col vv-footer-contacts">
-				<h4 class="vv-footer-heading">KONTAKTI</h4>
+				<h4 class="vv-footer-heading"><?php echo esc_html( vv_t( 'KONTAKTI', 'CONTACT', 'KONTAKT' ) ); ?></h4>
 
 				<ul class="vv-footer-contact-list">
 					<li class="vv-footer-contact-item">
 						<span class="vv-footer-contact-icon" aria-hidden="true">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
 						</span>
-						<a href="mailto:info@vecvagari.lv">info@vecvagari.lv</a>
+						<a href="mailto:info@vecvagari.com">info@vecvagari.com</a>
 					</li>
 					<li class="vv-footer-contact-item">
 						<span class="vv-footer-contact-icon" aria-hidden="true">
@@ -91,7 +92,7 @@
 					</li>
 				</ul>
 
-				<div class="vv-footer-social" aria-label="Sociālie tīkli">
+				<div class="vv-footer-social" aria-label="<?php echo esc_attr( vv_t( 'Sociālie tīkli', 'Social media', 'Sociala medier' ) ); ?>">
 					<a href="https://www.facebook.com/vecvagari" class="vv-social-link" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
 						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
 					</a>
@@ -116,7 +117,7 @@
 			<span class="vv-footer-copyright">
 				&copy; <?php echo esc_html( date( 'Y' ) ); ?> SIA &ldquo;Vecvagari M&rdquo;
 				&nbsp;&middot;&nbsp;
-				<a href="<?php echo esc_url( home_url( '/privatuma-politika/' ) ); ?>" class="vv-footer-privacy">Privātuma politika</a>
+				<a href="<?php echo esc_url( home_url( '/privatuma-politika/' ) ); ?>" class="vv-footer-privacy"><?php echo esc_html( vv_t( 'Privātuma politika', 'Privacy Policy', 'Integritetspolicy' ) ); ?></a>
 			</span>
 		</div>
 	</div>

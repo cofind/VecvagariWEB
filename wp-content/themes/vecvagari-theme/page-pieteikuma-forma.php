@@ -46,7 +46,7 @@ get_header();
 					</p>
 					<p class="vv-pf-callout__item">
 						<span class="vv-pf-callout__icon" aria-hidden="true">&#128231;</span>
-						<a href="mailto:info@vecvagari.lv">info@vecvagari.lv</a>
+						<a href="mailto:info@vecvagari.com">info@vecvagari.com</a>
 					</p>
 				</div>
 			</div>

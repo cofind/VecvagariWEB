@@ -58,21 +58,44 @@ add_action( 'wp_enqueue_scripts', function() {
 } );
 
 // ── Template routing ────────────────────────────────────────────────────────
-// WordPress template hierarchy matches page-{slug}.php, but some page slugs
-// are long/differ from our short template filenames, so we map them here.
+// LRM-126: Polylang-aware routing. For translated pages, Polylang creates a
+// separate post (possibly with a different slug). We resolve the LV original
+// to find the right template filename, so EN and SV pages load the same
+// template as their LV counterpart (which already uses vv_t() for all strings).
 add_filter( 'template_include', function( $template ) {
+	if ( ! is_page() ) {
+		return $template;
+	}
+
+	// slug → template filename for all pages that need custom templates.
 	$map = [
+		'par-mums'                               => 'page-par-mums.php',
+		'kontakti'                               => 'page-kontakti.php',
+		'vakances'                               => 'page-vakances.php',
+		'meza-ipasumu-pirksana'                  => 'page-meza-ipasumu-pirksana.php',
+		'pieteikuma-forma'                       => 'page-pieteikuma-forma.php',
 		'cirsmu-un-sortimentu-pie-cela-pirksana' => 'page-cirsmu-un-sortimentu-pirksana.php',
-		'mezizstrades-pakalpojuma-sniegsana'      => 'page-mezizstrades-pakalpojumi.php',
+		'mezizstrades-pakalpojuma-sniegsana'     => 'page-mezizstrades-pakalpojumi.php',
 	];
-	foreach ( $map as $slug => $file ) {
-		if ( is_page( $slug ) ) {
-			$path = get_template_directory() . '/' . $file;
-			if ( file_exists( $path ) ) {
-				return $path;
-			}
+
+	// Resolve to the LV (default-language) post so translated pages get the
+	// same template as their original.
+	$id = get_queried_object_id();
+	if ( function_exists( 'pll_get_post' ) ) {
+		$lv_id = pll_get_post( $id, 'lv' );
+		if ( $lv_id && $lv_id !== $id ) {
+			$id = $lv_id;
 		}
 	}
+
+	$slug = get_post_field( 'post_name', $id );
+	if ( isset( $map[ $slug ] ) ) {
+		$path = get_template_directory() . '/' . $map[ $slug ];
+		if ( file_exists( $path ) ) {
+			return $path;
+		}
+	}
+
 	return $template;
 }, 20 );
 
@@ -322,6 +345,45 @@ add_action( 'wp_head', function() {
 	];
 	echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
 }, 99 );
+
+// ── LRM-126: Multilingual helpers (Polylang) ─────────────────────────────────
+
+// Register translatable theme strings so they appear in Languages → Translations of strings.
+add_action( 'init', function() {
+	if ( ! function_exists( 'pll_register_string' ) ) {
+		return;
+	}
+	$group = 'vecvagari-theme';
+	pll_register_string( 'cta-button',       'PIETEIKT PAKALPOJUMU', $group );
+	pll_register_string( 'read-more',        'LASĪT VAIRĀK',         $group );
+	pll_register_string( 'learn-more',       'UZZINĀT VAIRĀK ↓',     $group );
+	pll_register_string( 'footer-tagline',   'Mežizstrāde Kurzemē un Zemgalē kopš 2005', $group );
+	pll_register_string( 'vacancies-empty',  'Šobrīd aktīvu vakanču nav.',               $group );
+	pll_register_string( 'apply-btn',        'Pieteikties →',        $group );
+	pll_register_string( 'nav-par-mums',     'Par mums',             $group );
+	pll_register_string( 'nav-kontakti',     'Kontakti',             $group );
+	pll_register_string( 'nav-vakances',     'Vakances',             $group );
+} );
+
+/**
+ * Returns the translated string for the current Polylang language.
+ * Falls back to $lv if translation not provided or Polylang not active.
+ */
+function vv_t( string $lv, string $en = '', string $sv = '' ): string {
+	static $lang = null;
+	if ( $lang === null ) {
+		$lang = function_exists( 'pll_current_language' ) ? pll_current_language() : 'lv';
+	}
+	if ( $lang === 'en' && $en !== '' ) return $en;
+	if ( $lang === 'sv' && $sv !== '' ) return $sv;
+	return $lv;
+}
+
+// Register the 'vakance' CPT with Polylang so vacancies can be translated.
+add_filter( 'pll_get_post_types', function( $post_types ) {
+	$post_types['vakance'] = 'vakance';
+	return $post_types;
+} );
 
 // ── LRM-125: Vakances pieteikumi (Job Applications) ──────────────────────────
 
