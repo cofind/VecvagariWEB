@@ -360,6 +360,9 @@ add_action( 'wp_head', function() {
 	echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
 }, 99 );
 
+// ── LRM-130: ACF field groups for homepage editable content ──────────────────
+require_once get_template_directory() . '/inc/acf-fields.php';
+
 // ── LRM-126: Multilingual helpers (Polylang) ─────────────────────────────────
 
 // Register translatable theme strings so they appear in Languages → Translations of strings.
@@ -442,6 +445,26 @@ function vv_url( string $path ): string {
 	// LV or fallback.
 	$prefix = ( $lang === 'lv' ) ? '' : '/' . $lang;
 	return home_url( $prefix . $path );
+}
+
+/**
+ * LRM-130: ACF field value with string fallback.
+ * Returns the ACF field value for the current post when ACF is active and the
+ * field is non-empty. Falls back to $fallback (typically a vv_t() call) so
+ * the page never shows blank sections if fields have not been filled in yet.
+ *
+ * @param string $key      ACF field name.
+ * @param string $fallback Value to return when field is empty or ACF inactive.
+ * @return string
+ */
+function vv_field( string $key, string $fallback = '' ): string {
+	if ( function_exists( 'get_field' ) ) {
+		$value = get_field( $key );
+		if ( $value !== false && $value !== null && $value !== '' ) {
+			return (string) $value;
+		}
+	}
+	return $fallback;
 }
 
 // LRM-128: Fix get_permalink() for translated front pages so pll_the_languages()

@@ -8,17 +8,25 @@
  */
 ?>
 
-<?php if ( is_front_page() ) : ?>
+<?php if ( is_front_page() ) :
+// LRM-130: CTA strip values — ACF fields with vv_t() fallbacks.
+$cta_heading  = vv_field( 'cta_heading',  vv_t( 'Interesē meža īpašumu pārdošana vai mežizstrādes pakalpojums?', 'Interested in selling forest property or forestry services?', 'Intresserad av att sälja skogsfastighet eller skogstjänster?' ) );
+$cta_body     = vv_field( 'cta_body',     vv_t( 'Sazinieties ar mums — novērtēšana un konsultācija bez maksas.', 'Contact us — valuation and consultation is free.', 'Kontakta oss — värdering och konsultation är gratis.' ) );
+$cta_btn_text = vv_field( 'cta_btn_text', vv_t( 'PIETEIKT PAKALPOJUMU →', 'APPLY FOR SERVICE →', 'ANSÖK OM TJÄNST →' ) );
+$cta_btn_url  = vv_field( 'cta_btn_url',  vv_url( '/pieteikuma-forma/' ) );
+$cta_phone    = vv_field( 'cta_phone',    '+371 25590827' );
+$cta_phone_e164 = preg_replace( '/[^+\d]/', '', $cta_phone );
+?>
 <section class="vv-cta-strip" aria-label="<?php echo esc_attr( vv_t( 'Aicinājums rīkoties', 'Call to action', 'Uppmaning till handling' ) ); ?>">
 	<div class="vv-cta-inner">
-		<h2 class="vv-cta-heading"><?php echo esc_html( vv_t( 'Interesē meža īpašumu pārdošana vai mežizstrādes pakalpojums?', 'Interested in selling forest property or forestry services?', 'Intresserad av att sälja skogsfastighet eller skogstjänster?' ) ); ?></h2>
-		<p class="vv-cta-sub"><?php echo esc_html( vv_t( 'Sazinieties ar mums — novērtēšana un konsultācija bez maksas.', 'Contact us — valuation and consultation is free.', 'Kontakta oss — värdering och konsultation är gratis.' ) ); ?></p>
+		<h2 class="vv-cta-heading"><?php echo esc_html( $cta_heading ); ?></h2>
+		<p class="vv-cta-sub"><?php echo esc_html( $cta_body ); ?></p>
 		<div class="vv-cta-buttons">
-			<a href="<?php echo esc_url( vv_url( '/pieteikuma-forma/' ) ); ?>" class="vv-cta-btn vv-cta-btn--primary">
-				<?php echo esc_html( vv_t( 'PIETEIKT PAKALPOJUMU →', 'APPLY FOR SERVICE →', 'ANSÖK OM TJÄNST →' ) ); ?>
+			<a href="<?php echo esc_url( $cta_btn_url ); ?>" class="vv-cta-btn vv-cta-btn--primary">
+				<?php echo esc_html( $cta_btn_text ); ?>
 			</a>
-			<a href="tel:+37125590827" class="vv-cta-btn vv-cta-btn--outline">
-				+371 25590827
+			<a href="tel:<?php echo esc_attr( $cta_phone_e164 ); ?>" class="vv-cta-btn vv-cta-btn--outline">
+				<?php echo esc_html( $cta_phone ); ?>
 			</a>
 		</div>
 	</div>
