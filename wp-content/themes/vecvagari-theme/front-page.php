@@ -2,10 +2,9 @@
 /**
  * LRM-112: Homepage template.
  * LRM-126: Multilingual — all strings use vv_t().
- * LRM-130: ACF-powered editable content — vv_field() with vv_t() fallback.
- *          When ACF fields are empty, the page renders identically to before.
- *          get_field() reads from the current queried page ID, so LV/EN/SV
- *          homepages each serve their own independent field values.
+ * LRM-130: Admin-editable content via vv_hp() / vv_hp_rows() (WP Options).
+ *          vv_hp() reads from vv_homepage_{lang} option; falls back to vv_t().
+ *          Repeaters (stats, services) fall back to hardcoded defaults when empty.
  *
  * @package VecvagariTheme
  */
@@ -14,33 +13,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// ── Pre-fetch ACF values (with vv_t() fallbacks) ─────────────────────────────
+// ── Hero values ───────────────────────────────────────────────────────────────
+$hero_bg      = vv_hp( 'hero_bg_image' );
+$hero_eyebrow = vv_hp( 'hero_eyebrow',  vv_t( 'Mežizstrāde • Latvija kopš 2005', 'Forestry • Latvia since 2005', 'Skogsbruk • Lettland sedan 2005' ) );
+$hero_heading = vv_hp( 'hero_heading',  vv_t( 'Meža īpašuma vērtību<br>pārvēršam rezultātos', 'We turn forest property<br>value into results', 'Vi omvandlar skogsfastighetens<br>värde till resultat' ) );
+$hero_sub     = vv_hp( 'hero_subheading', vv_t( 'Pērkam meža īpašumus un cirsmas. Sniedzam mežizstrādes pakalpojumus. Kurzeme un Zemgale.', 'We buy forests, felling sites and timber assortments. We provide quality forestry services in Kurzeme and Zemgale.', 'Vi köper skogar, avverkningsplatser och sortiment. Vi erbjuder kvalitativa skogstjänster i Kurzeme och Zemgale.' ) );
+$cta1_text    = vv_hp( 'hero_cta_primary_text',   vv_t( 'PIETEIKT PAKALPOJUMU →', 'APPLY FOR SERVICE →', 'ANSÖK OM TJÄNST →' ) );
+$cta1_url     = vv_hp( 'hero_cta_primary_url',    vv_url( '/pieteikuma-forma/' ) );
+$cta2_text    = vv_hp( 'hero_cta_secondary_text', vv_t( 'UZZINĀT VAIRĀK ↓', 'LEARN MORE ↓', 'LÄS MER ↓' ) );
+$cta2_url     = vv_hp( 'hero_cta_secondary_url',  '#par-mums' );
 
-// Hero.
-$hero_bg       = function_exists( 'get_field' ) ? get_field( 'hero_bg_image' ) : '';
-$hero_eyebrow  = vv_field( 'hero_eyebrow',  vv_t( 'Mežizstrāde • Latvija kopš 2005', 'Forestry • Latvia since 2005', 'Skogsbruk • Lettland sedan 2005' ) );
-$hero_heading  = vv_field( 'hero_heading',  vv_t( 'Meža īpašuma vērtību<br>pārvēršam rezultātos', 'We turn forest property<br>value into results', 'Vi omvandlar skogsfastighetens<br>värde till resultat' ) );
-$hero_sub      = vv_field( 'hero_subheading', vv_t( 'Pērkam meža īpašumus un cirsmas. Sniedzam mežizstrādes pakalpojumus. Kurzeme un Zemgale.', 'We buy forests, felling sites and timber assortments. We provide quality forestry services in Kurzeme and Zemgale.', 'Vi köper skogar, avverkningsplatser och sortiment. Vi erbjuder kvalitativa skogstjänster i Kurzeme och Zemgale.' ) );
-$cta1_text     = vv_field( 'hero_cta_primary_text',    vv_t( 'PIETEIKT PAKALPOJUMU →', 'APPLY FOR SERVICE →', 'ANSÖK OM TJÄNST →' ) );
-$cta1_url      = vv_field( 'hero_cta_primary_url',     vv_url( '/pieteikuma-forma/' ) );
-$cta2_text     = vv_field( 'hero_cta_secondary_text',  vv_t( 'UZZINĀT VAIRĀK ↓', 'LEARN MORE ↓', 'LÄS MER ↓' ) );
-$cta2_url      = vv_field( 'hero_cta_secondary_url',   '#par-mums' );
+// ── Stats (repeater — empty = show hardcoded defaults) ────────────────────────
+$hp_stats = vv_hp_rows( 'stats' );
 
-// Stats (repeater — empty array = show hardcoded defaults).
-$acf_stats = function_exists( 'get_field' ) ? (array) get_field( 'stats' ) : [];
+// ── About values ──────────────────────────────────────────────────────────────
+$about_label   = vv_hp( 'about_label',   vv_t( 'PAR MUMS', 'ABOUT US', 'OM OSS' ) );
+$about_heading = vv_hp( 'about_heading', vv_t( 'Uzticams partneris mežā kopš 2005. gada', 'A trusted partner in the forest since 2005', 'En pålitlig partner i skogen sedan 2005' ) );
+$about_body    = vv_hp( 'about_body' );
+$about_cta_txt = vv_hp( 'about_cta_text', vv_t( 'LASĪT VAIRĀK →', 'READ MORE →', 'LÄS MER →' ) );
+$about_cta_url = vv_hp( 'about_cta_url',  vv_url( '/par-mums/' ) );
+$about_image   = vv_hp( 'about_image' );
 
-// About.
-$about_label   = vv_field( 'about_label',   vv_t( 'PAR MUMS', 'ABOUT US', 'OM OSS' ) );
-$about_heading = vv_field( 'about_heading', vv_t( 'Uzticams partneris mežā kopš 2005. gada', 'A trusted partner in the forest since 2005', 'En pålitlig partner i skogen sedan 2005' ) );
-$about_body    = function_exists( 'get_field' ) ? get_field( 'about_body' ) : '';
-$about_cta_txt = vv_field( 'about_cta_text', vv_t( 'LASĪT VAIRĀK →', 'READ MORE →', 'LÄS MER →' ) );
-$about_cta_url = vv_field( 'about_cta_url',  vv_url( '/par-mums/' ) );
-$about_image   = function_exists( 'get_field' ) ? get_field( 'about_image' ) : null; // returns array
-
-// Services (repeater — empty array = show hardcoded defaults).
-$services_label   = vv_field( 'services_label',   vv_t( 'PAKALPOJUMI', 'SERVICES', 'TJÄNSTER' ) );
-$services_heading = vv_field( 'services_heading', vv_t( 'Mūsu pakalpojumi', 'Our services', 'Våra tjänster' ) );
-$acf_services     = function_exists( 'get_field' ) ? (array) get_field( 'services' ) : [];
+// ── Services (repeater — empty = show hardcoded defaults) ─────────────────────
+$services_label   = vv_hp( 'services_label',   vv_t( 'PAKALPOJUMI', 'SERVICES', 'TJÄNSTER' ) );
+$services_heading = vv_hp( 'services_heading', vv_t( 'Mūsu pakalpojumi', 'Our services', 'Våra tjänster' ) );
+$hp_services      = vv_hp_rows( 'services' );
 
 get_header();
 ?>
@@ -71,16 +68,16 @@ get_header();
 	<section class="vv-stats" aria-label="<?php echo esc_attr( vv_t( 'Galvenie rādītāji', 'Key figures', 'Nyckeltal' ) ); ?>">
 		<div class="vv-stats__inner">
 
-			<?php if ( ! empty( $acf_stats ) ) : ?>
+			<?php if ( ! empty( $hp_stats ) ) : ?>
 
-				<?php foreach ( $acf_stats as $stat ) : ?>
+				<?php foreach ( $hp_stats as $stat ) : ?>
 					<div class="vv-stat">
-						<span class="vv-stat__num"><?php echo esc_html( $stat['stat_number'] ); ?></span>
-						<span class="vv-stat__label"><?php echo esc_html( $stat['stat_label'] ); ?></span>
+						<span class="vv-stat__num"><?php echo esc_html( $stat['number'] ); ?></span>
+						<span class="vv-stat__label"><?php echo esc_html( $stat['label'] ); ?></span>
 					</div>
 				<?php endforeach; ?>
 
-			<?php else : ?>
+			<?php else : // Hardcoded fallback ?>
 
 				<div class="vv-stat">
 					<span class="vv-stat__num">20+</span>
@@ -133,13 +130,13 @@ get_header();
 			</div>
 
 			<figure class="vv-about__media">
-				<?php if ( $about_image && ! empty( $about_image['url'] ) ) : ?>
+				<?php if ( $about_image ) : ?>
 					<img
-						src="<?php echo esc_url( $about_image['url'] ); ?>"
-						alt="<?php echo esc_attr( $about_image['alt'] ?: vv_t( 'Vecvagari M mežizstrādes komanda', 'Vecvagari M forestry team', 'Vecvagari M skogsbruksteam' ) ); ?>"
+						src="<?php echo esc_url( $about_image ); ?>"
+						alt="<?php echo esc_attr( vv_t( 'Vecvagari M mežizstrādes komanda', 'Vecvagari M forestry team', 'Vecvagari M skogsbruksteam' ) ); ?>"
 						loading="lazy"
-						width="<?php echo esc_attr( $about_image['width'] ?: 701 ); ?>"
-						height="<?php echo esc_attr( $about_image['height'] ?: 442 ); ?>"
+						width="701"
+						height="442"
 					>
 				<?php else : ?>
 					<img
@@ -165,24 +162,24 @@ get_header();
 
 			<div class="vv-service-cards">
 
-				<?php if ( ! empty( $acf_services ) ) : ?>
+				<?php if ( ! empty( $hp_services ) ) : ?>
 
-					<?php foreach ( $acf_services as $card ) : ?>
+					<?php foreach ( $hp_services as $card ) : ?>
 						<article class="vv-service-card">
-							<?php if ( ! empty( $card['service_icon'] ) ) : ?>
-								<div class="vv-service-card__icon" aria-hidden="true"><?php echo esc_html( $card['service_icon'] ); ?></div>
+							<?php if ( ! empty( $card['icon'] ) ) : ?>
+								<div class="vv-service-card__icon" aria-hidden="true"><?php echo esc_html( $card['icon'] ); ?></div>
 							<?php endif; ?>
-							<h3 class="vv-service-card__title"><?php echo esc_html( $card['service_title'] ); ?></h3>
-							<p class="vv-service-card__desc"><?php echo esc_html( $card['service_body'] ); ?></p>
-							<?php if ( ! empty( $card['service_link_url'] ) ) : ?>
-								<a href="<?php echo esc_url( $card['service_link_url'] ); ?>" class="vv-service-card__link">
-									<?php echo esc_html( $card['service_link_text'] ?: vv_t( 'Uzzināt vairāk →', 'Learn more →', 'Läs mer →' ) ); ?>
+							<h3 class="vv-service-card__title"><?php echo esc_html( $card['title'] ); ?></h3>
+							<p class="vv-service-card__desc"><?php echo esc_html( $card['body'] ); ?></p>
+							<?php if ( ! empty( $card['link_url'] ) ) : ?>
+								<a href="<?php echo esc_url( $card['link_url'] ); ?>" class="vv-service-card__link">
+									<?php echo esc_html( $card['link_text'] ?: vv_t( 'Uzzināt vairāk →', 'Learn more →', 'Läs mer →' ) ); ?>
 								</a>
 							<?php endif; ?>
 						</article>
 					<?php endforeach; ?>
 
-				<?php else : ?>
+				<?php else : // Hardcoded fallback ?>
 
 					<article class="vv-service-card">
 						<div class="vv-service-card__icon" aria-hidden="true">&#127795;</div>

@@ -9,12 +9,12 @@
 ?>
 
 <?php if ( is_front_page() ) :
-// LRM-130: CTA strip values — ACF fields with vv_t() fallbacks.
-$cta_heading  = vv_field( 'cta_heading',  vv_t( 'Interesē meža īpašumu pārdošana vai mežizstrādes pakalpojums?', 'Interested in selling forest property or forestry services?', 'Intresserad av att sälja skogsfastighet eller skogstjänster?' ) );
-$cta_body     = vv_field( 'cta_body',     vv_t( 'Sazinieties ar mums — novērtēšana un konsultācija bez maksas.', 'Contact us — valuation and consultation is free.', 'Kontakta oss — värdering och konsultation är gratis.' ) );
-$cta_btn_text = vv_field( 'cta_btn_text', vv_t( 'PIETEIKT PAKALPOJUMU →', 'APPLY FOR SERVICE →', 'ANSÖK OM TJÄNST →' ) );
-$cta_btn_url  = vv_field( 'cta_btn_url',  vv_url( '/pieteikuma-forma/' ) );
-$cta_phone    = vv_field( 'cta_phone',    '+371 25590827' );
+// LRM-130: CTA strip values — wp_options via vv_hp() with vv_t() fallbacks.
+$cta_heading  = vv_hp( 'cta_heading',  vv_t( 'Interesē meža īpašumu pārdošana vai mežizstrādes pakalpojums?', 'Interested in selling forest property or forestry services?', 'Intresserad av att sälja skogsfastighet eller skogstjänster?' ) );
+$cta_body     = vv_hp( 'cta_body',     vv_t( 'Sazinieties ar mums — novērtēšana un konsultācija bez maksas.', 'Contact us — valuation and consultation is free.', 'Kontakta oss — värdering och konsultation är gratis.' ) );
+$cta_btn_text = vv_hp( 'cta_btn_text', vv_t( 'PIETEIKT PAKALPOJUMU →', 'APPLY FOR SERVICE →', 'ANSÖK OM TJÄNST →' ) );
+$cta_btn_url  = vv_hp( 'cta_btn_url',  vv_url( '/pieteikuma-forma/' ) );
+$cta_phone    = vv_hp( 'cta_phone',    '+371 25590827' );
 $cta_phone_e164 = preg_replace( '/[^+\d]/', '', $cta_phone );
 ?>
 <section class="vv-cta-strip" aria-label="<?php echo esc_attr( vv_t( 'Aicinājums rīkoties', 'Call to action', 'Uppmaning till handling' ) ); ?>">
