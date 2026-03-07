@@ -22,23 +22,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Bail early if ACF is not active (safety guard).
-if ( ! function_exists( 'acf_add_local_field_group' ) ) {
-	return;
-}
+// Register all field groups on the acf/init hook — the ACF-recommended timing.
+// Calling acf_add_local_field_group() before this hook can cause groups to be
+// invisible in the WP Admin Custom Fields list even though WP-CLI sees them.
+add_action( 'acf/init', 'vecvagari_register_acf_field_groups' );
 
-// All 3 language homepage page IDs. Each array element is a separate OR rule
-// group so the fields show when editing any of the 3 pages.
-$homepage_location = [
-	[ [ 'param' => 'post', 'operator' => '==', 'value' => '10' ] ],
-	[ [ 'param' => 'post', 'operator' => '==', 'value' => '899' ] ],
-	[ [ 'param' => 'post', 'operator' => '==', 'value' => '900' ] ],
-];
+/**
+ * Register ACF local field groups for the homepage.
+ * Called on acf/init so ACF's admin list picks them up correctly.
+ */
+function vecvagari_register_acf_field_groups() {
+
+	// All 3 language homepage page IDs. Each element is a separate OR rule group
+	// so the fields show when editing any of the 3 pages.
+	$homepage_location = [
+		[ [ 'param' => 'post', 'operator' => '==', 'value' => '10' ] ],
+		[ [ 'param' => 'post', 'operator' => '==', 'value' => '899' ] ],
+		[ [ 'param' => 'post', 'operator' => '==', 'value' => '900' ] ],
+	];
+
+	// LRM-130: 'active' => 1 is explicit so ACF admin list shows the groups.
+	// Without this the raw local registration lacks the flag and may be hidden.
 
 // ── Hero section ──────────────────────────────────────────────────────────────
 acf_add_local_field_group( [
 	'key'        => 'group_homepage_hero',
 	'title'      => 'Homepage — Hero',
+	'active'     => 1,
 	'location'   => $homepage_location,
 	'menu_order' => 10,
 	'fields'     => [
@@ -119,6 +129,7 @@ acf_add_local_field_group( [
 acf_add_local_field_group( [
 	'key'        => 'group_homepage_stats',
 	'title'      => 'Homepage — Stats row',
+	'active'     => 1,
 	'location'   => $homepage_location,
 	'menu_order' => 20,
 	'fields'     => [
@@ -163,6 +174,7 @@ acf_add_local_field_group( [
 acf_add_local_field_group( [
 	'key'        => 'group_homepage_about',
 	'title'      => 'Homepage — About section',
+	'active'     => 1,
 	'location'   => $homepage_location,
 	'menu_order' => 30,
 	'fields'     => [
@@ -225,6 +237,7 @@ acf_add_local_field_group( [
 acf_add_local_field_group( [
 	'key'        => 'group_homepage_services',
 	'title'      => 'Homepage — Service cards',
+	'active'     => 1,
 	'location'   => $homepage_location,
 	'menu_order' => 40,
 	'fields'     => [
@@ -310,6 +323,7 @@ acf_add_local_field_group( [
 acf_add_local_field_group( [
 	'key'        => 'group_homepage_cta',
 	'title'      => 'Homepage — CTA banner',
+	'active'     => 1,
 	'location'   => $homepage_location,
 	'menu_order' => 50,
 	'fields'     => [
@@ -356,3 +370,5 @@ acf_add_local_field_group( [
 
 	],
 ] );
+
+} // end vecvagari_register_acf_field_groups()
