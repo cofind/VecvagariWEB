@@ -603,7 +603,7 @@ ul, ol { padding-left: 1.4em; }
 	display: block;
 	width: calc(100% + 56px); /* 28px padding × 2 sides */
 	margin: 0 -28px 24px;
-	height: 180px;
+	aspect-ratio: 660 / 471;  /* natural image ratio — scales with card width */
 	object-fit: cover;
 	flex-shrink: 0;
 }

@@ -165,8 +165,16 @@ get_header();
 				<?php if ( ! empty( $hp_services ) ) : ?>
 
 					<?php foreach ( $hp_services as $card ) : ?>
-						<article class="vv-service-card">
-							<?php if ( ! empty( $card['icon'] ) ) : ?>
+						<article class="vv-service-card<?php echo ! empty( $card['thumb_url'] ) ? ' vv-service-card--with-thumb' : ''; ?>">
+							<?php if ( ! empty( $card['thumb_url'] ) ) : ?>
+								<img
+									class="vv-service-card__thumb"
+									src="<?php echo esc_url( $card['thumb_url'] ); ?>"
+									alt=""
+									aria-hidden="true"
+									loading="lazy"
+								>
+							<?php elseif ( ! empty( $card['icon'] ) ) : ?>
 								<div class="vv-service-card__icon" aria-hidden="true"><?php echo esc_html( $card['icon'] ); ?></div>
 							<?php endif; ?>
 							<h3 class="vv-service-card__title"><?php echo esc_html( $card['title'] ); ?></h3>

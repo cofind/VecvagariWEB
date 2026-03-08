@@ -106,6 +106,7 @@ add_action( 'admin_post_vv_homepage_save', function () {
 				'body'      => sanitize_textarea_field( wp_unslash( $row['body'] ?? '' ) ),
 				'link_text' => sanitize_text_field( wp_unslash( $row['link_text'] ?? '' ) ),
 				'link_url'  => esc_url_raw( wp_unslash( $row['link_url'] ?? '' ) ),
+				'thumb_url' => esc_url_raw( wp_unslash( $row['thumb_url'] ?? '' ) ),
 			];
 		}
 	}
@@ -453,6 +454,24 @@ function vecvagari_homepage_admin_page() {
 									</div>
 								</div>
 								<div>
+									<label>Sīktēls</label>
+									<div class="vv-media-row">
+										<input type="url" name="services[<?php echo (int) $i; ?>][thumb_url]"
+											id="vv_svc_thumb_<?php echo (int) $i; ?>"
+											value="<?php echo esc_attr( $svc['thumb_url'] ?? '' ); ?>"
+											style="flex:1" placeholder="https://…/attels.webp">
+										<button type="button" class="button vv-media-btn"
+											data-target="vv_svc_thumb_<?php echo (int) $i; ?>"
+											data-preview="vv_svc_preview_<?php echo (int) $i; ?>">
+											Izvēlēties
+										</button>
+									</div>
+									<img id="vv_svc_preview_<?php echo (int) $i; ?>"
+										src="<?php echo esc_attr( $svc['thumb_url'] ?? '' ); ?>"
+										class="vv-media-preview"
+										<?php echo ! empty( $svc['thumb_url'] ) ? 'style="display:block"' : ''; ?>>
+								</div>
+								<div>
 									<label>Apraksts</label>
 									<textarea name="services[<?php echo (int) $i; ?>][body]"
 										rows="2" style="width:100%"
@@ -491,6 +510,20 @@ function vecvagari_homepage_admin_page() {
 								<div style="padding-top:18px">
 									<button type="button" class="button vv-remove-svc">Noņemt</button>
 								</div>
+							</div>
+							<div>
+								<label>Sīktēls</label>
+								<div class="vv-media-row">
+									<input type="url" name="services[__IDX__][thumb_url]"
+										id="vv_svc_thumb___IDX__"
+										style="flex:1" placeholder="https://…/attels.webp">
+									<button type="button" class="button vv-media-btn"
+										data-target="vv_svc_thumb___IDX__"
+										data-preview="vv_svc_preview___IDX__">
+										Izvēlēties
+									</button>
+								</div>
+								<img id="vv_svc_preview___IDX__" src="" class="vv-media-preview" style="display:none">
 							</div>
 							<div>
 								<label>Apraksts</label>
@@ -591,8 +624,13 @@ function vecvagari_homepage_admin_page() {
 		// ── Services repeater ──
 		document.getElementById('vv-add-svc').addEventListener('click', function () {
 			var tpl = document.getElementById('vv-svc-tpl').content.cloneNode(true);
-			tpl.querySelectorAll('[name]').forEach(function (el) {
-				el.name = el.name.replace('__IDX__', svcIdx);
+			tpl.querySelectorAll('[name],[id]').forEach(function (el) {
+				if (el.name) el.name = el.name.replace(/__IDX__/g, svcIdx);
+				if (el.id)   el.id   = el.id.replace(/__IDX__/g, svcIdx);
+			});
+			tpl.querySelectorAll('[data-target],[data-preview]').forEach(function (el) {
+				if (el.dataset.target)  el.dataset.target  = el.dataset.target.replace(/__IDX__/g, svcIdx);
+				if (el.dataset.preview) el.dataset.preview = el.dataset.preview.replace(/__IDX__/g, svcIdx);
 			});
 			document.getElementById('vv-services-list').appendChild(tpl);
 			svcIdx++;
@@ -604,28 +642,28 @@ function vecvagari_homepage_admin_page() {
 			}
 		});
 
-		// ── WP Media library picker ──
-		document.querySelectorAll('.vv-media-btn').forEach(function (btn) {
-			btn.addEventListener('click', function () {
-				var targetId  = btn.dataset.target;
-				var previewId = btn.dataset.preview;
-				var frame = wp.media({
-					title:    'Izvēlēties attēlu',
-					button:   { text: 'Izmantot šo attēlu' },
-					multiple: false,
-					library:  { type: 'image' }
-				});
-				frame.on('select', function () {
-					var attachment = frame.state().get('selection').first().toJSON();
-					document.getElementById(targetId).value = attachment.url;
-					var preview = document.getElementById(previewId);
-					if (preview) {
-						preview.src   = attachment.url;
-						preview.style.display = 'block';
-					}
-				});
-				frame.open();
+		// ── WP Media library picker (event delegation — works for dynamically added rows) ──
+		document.body.addEventListener('click', function (e) {
+			var btn = e.target.closest('.vv-media-btn');
+			if (!btn) return;
+			var targetId  = btn.dataset.target;
+			var previewId = btn.dataset.preview;
+			var frame = wp.media({
+				title:    'Izvēlēties attēlu',
+				button:   { text: 'Izmantot šo attēlu' },
+				multiple: false,
+				library:  { type: 'image' }
 			});
+			frame.on('select', function () {
+				var attachment = frame.state().get('selection').first().toJSON();
+				document.getElementById(targetId).value = attachment.url;
+				var preview = document.getElementById(previewId);
+				if (preview) {
+					preview.src   = attachment.url;
+					preview.style.display = 'block';
+				}
+			});
+			frame.open();
 		});
 	}());
 	</script>
