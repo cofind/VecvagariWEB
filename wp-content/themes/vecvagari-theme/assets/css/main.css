@@ -593,6 +593,21 @@ ul, ol { padding-left: 1.4em; }
 	margin-bottom: 20px;
 }
 
+/* LRM-130: Card with top thumbnail image instead of icon */
+.vv-service-card--with-thumb {
+	padding-top: 0;
+	border-top: none;
+	overflow: hidden;
+}
+.vv-service-card__thumb {
+	display: block;
+	width: calc(100% + 56px); /* 28px padding × 2 sides */
+	margin: 0 -28px 24px;
+	height: 180px;
+	object-fit: cover;
+	flex-shrink: 0;
+}
+
 .vv-service-card__title {
 	font-family: var(--font-head);
 	font-size: 18px;

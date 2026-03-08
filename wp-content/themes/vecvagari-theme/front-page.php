@@ -181,8 +181,16 @@ get_header();
 
 				<?php else : // Hardcoded fallback ?>
 
-					<article class="vv-service-card">
-						<div class="vv-service-card__icon" aria-hidden="true">&#127795;</div>
+					<article class="vv-service-card vv-service-card--with-thumb">
+						<img
+							class="vv-service-card__thumb"
+							src="http://188.166.160.110/wp-content/uploads/2026/03/660x471.webp"
+							alt=""
+							aria-hidden="true"
+							loading="lazy"
+							width="660"
+							height="471"
+						>
 						<h3 class="vv-service-card__title"><?php echo esc_html( vv_t( 'Meža īpašumu pirkšana', 'Forest property purchase', 'Köp av skogsfastigheter' ) ); ?></h3>
 						<p class="vv-service-card__desc"><?php echo esc_html( vv_t(
 							'Pērkam meža īpašumus par godīgu tirgus cenu visā Latvijā. Novērtēšana bezmaksas, darījums 2–3 nedēļu laikā.',
