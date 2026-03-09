@@ -31,6 +31,30 @@
 				<span aria-hidden="true">&times;</span>
 			</button>
 
+			<!-- LRM-133: Language switcher inside mobile drawer -->
+			<?php
+			$pll_langs_raw = function_exists( 'pll_the_languages' ) ? pll_the_languages( [ 'raw' => 1, 'hide_if_empty' => 0, 'hide_if_no_translation' => 0 ] ) : [];
+			$lang_flags    = [ 'lv' => '🇱🇻', 'en' => '🇬🇧', 'sv' => '🇸🇪' ];
+			if ( $pll_langs_raw ) :
+			?>
+			<div class="vv-lang-switcher vv-lang-switcher--mobile" role="navigation" aria-label="Language switcher">
+				<?php foreach ( $pll_langs_raw as $l ) :
+					$code = esc_html( strtoupper( $l['slug'] ) );
+					$flag = $lang_flags[ $l['slug'] ] ?? '';
+				?>
+					<?php if ( $l['current_lang'] ) : ?>
+						<span class="vv-lang-switcher__item vv-lang-switcher__item--active" aria-current="true">
+							<?php echo $flag; ?> <?php echo $code; ?>
+						</span>
+					<?php else : ?>
+						<a href="<?php echo esc_url( $l['url'] ); ?>" class="vv-lang-switcher__item" hreflang="<?php echo esc_attr( $l['locale'] ); ?>">
+							<?php echo $flag; ?> <?php echo $code; ?>
+						</a>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</div>
+			<?php endif; ?>
+
 			<?php
 			// LRM-127: Fallback nav — PAKALPOJUMI dropdown with 3 service pages nested.
 			wp_nav_menu( [

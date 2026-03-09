@@ -2267,7 +2267,23 @@ a.vv-lang-switcher__item:hover {
 	border-left: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Hide on mobile — hamburger nav has full access to all pages */
+/* LRM-133: Hide desktop switcher on mobile (mobile version lives inside the drawer) */
+.vv-lang-switcher--mobile { display: none; }
+
 @media (max-width: 900px) {
-	.vv-lang-switcher { display: none; }
+	.vv-lang-switcher:not(.vv-lang-switcher--mobile) { display: none; }
+	.vv-lang-switcher--mobile {
+		display: flex;
+		justify-content: center;
+		gap: 4px;
+		padding: 16px 24px 8px;
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+		margin-top: 8px;
+	}
+	/* Slightly larger tap targets inside the drawer */
+	.vv-lang-switcher--mobile .vv-lang-switcher__item {
+		font-size: 0.8rem;
+		padding: 6px 10px;
+		min-height: 40px;
+	}
 }
