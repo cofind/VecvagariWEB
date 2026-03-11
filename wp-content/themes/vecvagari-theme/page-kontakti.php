@@ -39,7 +39,7 @@ get_header();
 								<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
 							</svg>
 						</span>
-						<span class="vv-contact-text"><strong><?php echo esc_html( vv_t( 'Birojs:', 'Office:', 'Kontor:' ) ); ?></strong> Dzirnavu 13, Saldus, LV-3801</span>
+						<span class="vv-contact-text"><strong><?php echo esc_html( vv_t( 'Birojs:', 'Office:', 'Kontor:' ) ); ?></strong> <?php echo esc_html( vv_contact( 'address', 'Dzirnavu 13, Saldus, LV-3801' ) ); ?></span>
 					</li>
 
 					<li class="vv-contact-item">
@@ -48,7 +48,7 @@ get_header();
 								<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
 							</svg>
 						</span>
-						<a href="mailto:info@vecvagari.com" class="vv-contact-link">info@vecvagari.com</a>
+						<a href="mailto:<?php echo esc_attr( vv_contact( 'email', 'info@vecvagari.com' ) ); ?>" class="vv-contact-link"><?php echo esc_html( vv_contact( 'email', 'info@vecvagari.com' ) ); ?></a>
 					</li>
 
 					<li class="vv-contact-item vv-contact-phones">
@@ -60,19 +60,19 @@ get_header();
 						<div class="vv-contact-phone-list">
 							<div class="vv-phone-row">
 								<span class="vv-phone-label"><?php echo esc_html( vv_t( 'Birojs:', 'Office:', 'Kontor:' ) ); ?></span>
-								<a href="tel:+37125590827" class="vv-contact-link">+371 25590827</a>
+								<a href="tel:<?php echo esc_attr( preg_replace( '/[^+\d]/', '', vv_contact( 'phone_office', '+37125590827' ) ) ); ?>" class="vv-contact-link"><?php echo esc_html( vv_contact( 'phone_office', '+371 25590827' ) ); ?></a>
 							</div>
 							<div class="vv-phone-row">
 								<span class="vv-phone-label"><?php echo esc_html( vv_t( 'Meža īpašumi un cirsmas:', 'Forest properties and felling sites:', 'Skogsfastigheter och avverkningsplatser:' ) ); ?></span>
-								<a href="tel:+37128602441" class="vv-contact-link">+371 28602441</a>
+								<a href="tel:<?php echo esc_attr( preg_replace( '/[^+\d]/', '', vv_contact( 'phone_properties', '+37128602441' ) ) ); ?>" class="vv-contact-link"><?php echo esc_html( vv_contact( 'phone_properties', '+371 28602441' ) ); ?></a>
 							</div>
 							<div class="vv-phone-row">
 								<span class="vv-phone-label"><?php echo esc_html( vv_t( 'Mežizstrādes pakalpojumi:', 'Forestry services:', 'Skogstjänster:' ) ); ?></span>
-								<a href="tel:+37126554689" class="vv-contact-link">+371 26554689</a>
+								<a href="tel:<?php echo esc_attr( preg_replace( '/[^+\d]/', '', vv_contact( 'phone_forestry', '+37126554689' ) ) ); ?>" class="vv-contact-link"><?php echo esc_html( vv_contact( 'phone_forestry', '+371 26554689' ) ); ?></a>
 							</div>
 							<div class="vv-phone-row">
 								<span class="vv-phone-label"><?php echo esc_html( vv_t( 'Grāmatvedība:', 'Accounting:', 'Bokföring:' ) ); ?></span>
-								<a href="tel:+37129215297" class="vv-contact-link">+371 29215297</a>
+								<a href="tel:<?php echo esc_attr( preg_replace( '/[^+\d]/', '', vv_contact( 'phone_accounting', '+37129215297' ) ) ); ?>" class="vv-contact-link"><?php echo esc_html( vv_contact( 'phone_accounting', '+371 29215297' ) ); ?></a>
 							</div>
 						</div>
 					</li>
@@ -83,7 +83,10 @@ get_header();
 								<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
 							</svg>
 						</span>
-						<span class="vv-contact-text"><?php echo esc_html( vv_t( 'Darba laiks: P–Pk 8:00–17:00', 'Working hours: Mon–Fri 8:00–17:00', 'Öppettider: Mån–Fre 8:00–17:00' ) ); ?></span>
+						<span class="vv-contact-text"><?php
+						$wh = vv_contact( 'working_hours', 'P–Pk 8:00–17:00' );
+						echo esc_html( vv_t( 'Darba laiks: ' . $wh, 'Working hours: ' . $wh, 'Öppettider: ' . $wh ) );
+					?></span>
 					</li>
 
 				</ul>
@@ -93,8 +96,8 @@ get_header();
 				</a>
 
 				<p class="vv-contacts-legal">
-					<?php echo esc_html( vv_t( 'Juridiskā adrese:', 'Registered address:', 'Registrerad adress:' ) ); ?> Saldus nov., Lutriņu pag., Kamiņi, Zaļā iela 1-3<br>
-					<?php echo esc_html( vv_t( 'Reģ. nr.:', 'Reg. no.:', 'Org.nr.:' ) ); ?> 48503010838
+					<?php echo esc_html( vv_t( 'Juridiskā adrese:', 'Registered address:', 'Registrerad adress:' ) ); ?> <?php echo esc_html( vv_contact( 'legal_address', 'Saldus nov., Lutriņu pag., Kamiņi, Zaļā iela 1-3' ) ); ?><br>
+					<?php echo esc_html( vv_t( 'Reģ. nr.:', 'Reg. no.:', 'Org.nr.:' ) ); ?> <?php echo esc_html( vv_contact( 'reg_number', '48503010838' ) ); ?>
 				</p>
 
 			</div>
@@ -102,7 +105,7 @@ get_header();
 			<div class="vv-contacts-map">
 				<iframe
 					loading="lazy"
-					src="https://maps.google.com/maps?q=Dzirnavu+13%2C+Saldus%2C+LV-3801&t=m&z=14&output=embed&iwloc=near"
+					src="<?php echo esc_url( vv_contact( 'maps_embed_url', 'https://maps.google.com/maps?q=Dzirnavu+13%2C+Saldus%2C+LV-3801&t=m&z=14&output=embed&iwloc=near' ) ); ?>"
 					title="SIA Vecvagari M &mdash; Dzirnavu 13, Saldus"
 					aria-label="<?php echo esc_attr( vv_t( 'SIA Vecvagari M atrāšanās vieta kartē', 'SIA Vecvagari M location on map', 'SIA Vecvagari M plats på karta' ) ); ?>"
 					width="100%"

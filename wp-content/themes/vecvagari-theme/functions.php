@@ -366,6 +366,26 @@ require_once get_template_directory() . '/inc/admin-homepage.php';
 // ── LRM-131: Service request register (CPT + WPForms hook) ───────────────────
 require_once get_template_directory() . '/inc/pakalpojumi-pieteikumi.php';
 
+// ── LRM-134 / LRM-137: Contact info admin editor ─────────────────────────────
+require_once get_template_directory() . '/inc/admin-contact.php';
+
+/**
+ * LRM-134: Return a contact info field value from wp_options (vv_contact).
+ * Falls back to $fallback if the option is not yet set.
+ *
+ * @param string $key      Field key (e.g. 'email', 'phone_office').
+ * @param string $fallback Value to return when the stored value is empty.
+ * @return string
+ */
+function vv_contact( string $key, string $fallback = '' ): string {
+	static $opts = null;
+	if ( $opts === null ) {
+		$opts = (array) get_option( 'vv_contact', [] );
+	}
+	$value = $opts[ $key ] ?? '';
+	return $value !== '' ? $value : $fallback;
+}
+
 // ── LRM-126: Multilingual helpers (Polylang) ─────────────────────────────────
 
 // Register translatable theme strings so they appear in Languages → Translations of strings.
