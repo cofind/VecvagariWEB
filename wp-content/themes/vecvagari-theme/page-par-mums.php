@@ -30,7 +30,11 @@ get_header();
 	<section class="vv-sp-body">
 		<div class="vv-sp-inner">
 
-			<div class="vv-sp-text">
+			<?php $page_body = get_the_content(); ?>
+			<div class="vv-sp-text<?php echo $page_body ? ' entry-content' : ''; ?>">
+			<?php if ( $page_body ) :
+				echo wp_kses_post( apply_filters( 'the_content', $page_body ) );
+				else : ?>
 				<h2><?php echo esc_html( vv_t( 'Vecvagari M — uzticams partneris mežā', 'Vecvagari M — a trusted partner in the forest', 'Vecvagari M — en pålitlig partner i skogen' ) ); ?></h2>
 				<p><?php echo esc_html( vv_t(
 					'SIA "Vecvagari M" ir dibināts 2005. gadā Saldus novadā. Divdesmit gadu laikā esam kļuvuši par vienu no lielākajiem mežizstrādes un meža īpašumu darījumu uzņēmumiem Kurzemē un Zemgalē.',
@@ -47,6 +51,7 @@ get_header();
 					'Our long-standing cooperation with Latvian State Forests (LVM) and other major forestry organisations confirms our professionalism and reliability. Our team includes experienced foresters, drivers and technical specialists who know Latvian forests at first sight.',
 					'Vårt långvariga samarbete med Lettlands statsskogar (LVM) och andra stora skogsbruksorganisationer bekräftar vår professionalism och tillförlitlighet. Vårt team består av erfarna skogsmästare, förare och tekniska specialister som känner de lettiska skogarna i ett ögonblick.'
 				) ); ?></p>
+			<?php endif; ?>
 			</div>
 
 			<?php if ( has_post_thumbnail() ) : ?>

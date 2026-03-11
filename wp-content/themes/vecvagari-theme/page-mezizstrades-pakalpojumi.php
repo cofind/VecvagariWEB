@@ -30,7 +30,11 @@ get_header();
 	<section class="vv-sp-body">
 		<div class="vv-sp-inner">
 
-			<div class="vv-sp-text">
+			<?php $page_body = get_the_content(); ?>
+			<div class="vv-sp-text<?php echo $page_body ? ' entry-content' : ''; ?>">
+			<?php if ( $page_body ) :
+				echo wp_kses_post( apply_filters( 'the_content', $page_body ) );
+				else : ?>
 				<h2><?php echo esc_html( vv_t( 'Kompleksi mežizstrādes pakalpojumi', 'Comprehensive forestry services', 'Heltäckande skogstjänster' ) ); ?></h2>
 				<p><?php echo esc_html( vv_t(
 					'Esam viens no lielākajiem mežizstrādes uzņēmumiem Latvijā. Profesionāli veicam galvenās cirtes un krājas kopšanas darbus visā Kurzemē un Zemgalē.',
@@ -52,6 +56,7 @@ get_header();
 					'We work with both Latvian State Forests and private forest owners, following all applicable forestry regulations and standards.',
 					'Vi arbetar med både Lettlands statsskogar och privata skogsägare och följer alla tillämpliga skogsbruksregler och standarder.'
 				) ); ?></p>
+			<?php endif; ?>
 			</div>
 
 			<figure class="vv-sp-media">

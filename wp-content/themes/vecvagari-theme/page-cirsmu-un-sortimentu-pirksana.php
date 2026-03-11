@@ -30,7 +30,11 @@ get_header();
 	<section class="vv-sp-body">
 		<div class="vv-sp-inner">
 
-			<div class="vv-sp-text">
+			<?php $page_body = get_the_content(); ?>
+			<div class="vv-sp-text<?php echo $page_body ? ' entry-content' : ''; ?>">
+			<?php if ( $page_body ) :
+				echo wp_kses_post( apply_filters( 'the_content', $page_body ) );
+				else : ?>
 				<h2><?php echo esc_html( vv_t( 'Pērkam cirsmas un sortimentus pie ceļa', 'We buy felling sites and roadside assortments', 'Vi köper avverkningsplatser och vägsortiment' ) ); ?></h2>
 				<p><?php echo esc_html( vv_t(
 					'Ja jūsu mežā ir gatava cirte vai ja esat jau nocirtis un sakrāvis sortimentus pie ceļa, Vecvagari M ir ātrākais un uzticamākais pircējs Kurzemē un Zemgalē. Strādājam ar priedi, egli, bērzu, apsi un citām šķirnēm.',
@@ -52,6 +56,7 @@ get_header();
 					'Payment is made immediately upon completion of the transaction.',
 					'Betalning sker omedelbart efter att transaktionen har slutförts.'
 				) ); ?></p>
+			<?php endif; ?>
 			</div>
 
 			<figure class="vv-sp-media">

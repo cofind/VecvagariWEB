@@ -30,7 +30,11 @@ get_header();
 	<section class="vv-sp-body">
 		<div class="vv-sp-inner">
 
-			<div class="vv-sp-text">
+			<?php $page_body = get_the_content(); ?>
+			<div class="vv-sp-text<?php echo $page_body ? ' entry-content' : ''; ?>">
+			<?php if ( $page_body ) :
+				echo wp_kses_post( apply_filters( 'the_content', $page_body ) );
+				else : ?>
 				<h2><?php echo esc_html( vv_t( 'Kāpēc pārdot mežu Vecvagari M?', 'Why sell your forest to Vecvagari M?', 'Varför sälja din skog till Vecvagari M?' ) ); ?></h2>
 				<p><?php echo esc_html( vv_t(
 					'SIA "Vecvagari M" ir viens no pieredzīgākajiem meža īpašumu pircējiem Kurzemē un Zemgalē. Kopš 2005. gada esam noslēguši simtiem darījumu ar privātīpašniekiem visā Latvijā.',
@@ -52,6 +56,7 @@ get_header();
 					'We work with properties of any size — from 1 ha to hundreds of hectares. The purchase process takes an average of 2–3 weeks from first contact to money in your account.',
 					'Vi arbetar med fastigheter av alla storlekar — från 1 ha till hundratals hektar. Inköpsprocessen tar i genomsnitt 2–3 veckor från första kontakt till pengar på kontot.'
 				) ); ?></p>
+			<?php endif; ?>
 			</div>
 
 			<figure class="vv-sp-media">
