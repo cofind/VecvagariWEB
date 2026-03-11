@@ -210,8 +210,16 @@ get_header();
 						</a>
 					</article>
 
-					<article class="vv-service-card">
-						<div class="vv-service-card__icon" aria-hidden="true">&#129683;</div>
+					<article class="vv-service-card vv-service-card--with-thumb">
+						<img
+							class="vv-service-card__thumb"
+							src="<?php echo esc_url( content_url( '/uploads/2026/03/660x471.webp' ) ); ?>"
+							alt=""
+							aria-hidden="true"
+							loading="lazy"
+							width="660"
+							height="471"
+						>
 						<h3 class="vv-service-card__title"><?php echo esc_html( vv_t( 'Cirsmu un sortimentu pirkšana', 'Purchase of felling sites and assortments', 'Köp av avverkningsplatser och sortiment' ) ); ?></h3>
 						<p class="vv-service-card__desc"><?php echo esc_html( vv_t(
 							'Pērkam cirsmas un sortimentus pie ceļa. Ātra novērtēšana, konkurētspējīgas cenas, skaidri darījumi.',
@@ -223,8 +231,16 @@ get_header();
 						</a>
 					</article>
 
-					<article class="vv-service-card">
-						<div class="vv-service-card__icon" aria-hidden="true">&#128666;</div>
+					<article class="vv-service-card vv-service-card--with-thumb">
+						<img
+							class="vv-service-card__thumb"
+							src="<?php echo esc_url( content_url( '/uploads/2026/03/660x471.webp' ) ); ?>"
+							alt=""
+							aria-hidden="true"
+							loading="lazy"
+							width="660"
+							height="471"
+						>
 						<h3 class="vv-service-card__title"><?php echo esc_html( vv_t( 'Mežizstrādes pakalpojumi', 'Forestry services', 'Skogstjänster' ) ); ?></h3>
 						<p class="vv-service-card__desc"><?php echo esc_html( vv_t(
 							'Pilna cikla mežizstrāde ar moderniem harvesteru komplektiem. Galvenās cirtes, krājas kopšana, kokmateriālu izvešana.',
