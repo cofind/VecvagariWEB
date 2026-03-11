@@ -599,9 +599,12 @@ ul, ol { padding-left: 1.4em; }
 	border-top: none;
 	overflow: hidden;
 }
+/* LRM-175: max-width: none overrides the global `img { max-width: 100% }` reset
+   which would otherwise cap the image at the content-box width and leave gaps */
 .vv-service-card__thumb {
 	display: block;
 	width: calc(100% + 56px); /* 28px padding × 2 sides */
+	max-width: none;
 	margin: 0 -28px 24px;
 	aspect-ratio: 660 / 471;  /* natural image ratio — scales with card width */
 	object-fit: cover;
