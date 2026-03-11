@@ -1594,7 +1594,7 @@ ul, ol { padding-left: 1.4em; }
 	font-size: 15px;
 	line-height: 1.6;
 	color: #c8c0a8;
-	background-color: #1a3310;
+	background-color: var(--color-forest-deep);
 	background-image: var(--texture-noise);
 	background-repeat: repeat;
 	background-size: 200px 200px;
@@ -1819,7 +1819,7 @@ ul, ol { padding-left: 1.4em; }
 		right: 0;
 		bottom: 0;
 		width: min(320px, 85vw);
-		background: #1a3310;
+		background: var(--color-forest-deep);
 		z-index: 999;
 		transform: translateX(100%);
 		transition: transform .3s cubic-bezier(.4,0,.2,1);

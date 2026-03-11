@@ -57,8 +57,6 @@ get_header();
 			<figure class="vv-sp-media">
 				<?php if ( has_post_thumbnail() ) : ?>
 					<?php the_post_thumbnail( 'large', [ 'alt' => esc_attr( vv_t( 'Cirsmu izstrāde', 'Felling site', 'Avverkningsplats' ) ) ] ); ?>
-				<?php else : ?>
-					<p class="vv-sp-media-placeholder"><?php echo esc_html( vv_t( 'Cirsmu izstrādes foto', 'Felling site photo', 'Foto av avverkningsplats' ) ); ?></p>
 				<?php endif; ?>
 			</figure>
 

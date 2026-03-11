@@ -363,6 +363,9 @@ add_action( 'wp_head', function() {
 // ── LRM-130: Custom homepage content editor (WP Admin settings page) ─────────
 require_once get_template_directory() . '/inc/admin-homepage.php';
 
+// ── LRM-131: Service request register (CPT + WPForms hook) ───────────────────
+require_once get_template_directory() . '/inc/pakalpojumi-pieteikumi.php';
+
 // ── LRM-126: Multilingual helpers (Polylang) ─────────────────────────────────
 
 // Register translatable theme strings so they appear in Languages → Translations of strings.

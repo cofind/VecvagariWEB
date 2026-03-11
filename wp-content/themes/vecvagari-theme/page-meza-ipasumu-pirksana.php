@@ -57,8 +57,6 @@ get_header();
 			<figure class="vv-sp-media">
 				<?php if ( has_post_thumbnail() ) : ?>
 					<?php the_post_thumbnail( 'large', [ 'alt' => esc_attr( vv_t( 'Meža īpašumu pirkšana', 'Forest property purchase', 'Köp av skogsfastigheter' ) ) ] ); ?>
-				<?php else : ?>
-					<p class="vv-sp-media-placeholder"><?php echo esc_html( vv_t( 'Meža īpašumu foto', 'Forest property photo', 'Foto av skogsfastighet' ) ); ?></p>
 				<?php endif; ?>
 			</figure>
 
