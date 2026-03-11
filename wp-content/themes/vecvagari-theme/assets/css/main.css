@@ -601,6 +601,7 @@ ul, ol { padding-left: 1.4em; }
 }
 /* LRM-175: max-width: none overrides the global `img { max-width: 100% }` reset
    which would otherwise cap the image at the content-box width and leave gaps */
+/* LRM-185: transition added for hover zoom — see rule below */
 .vv-service-card__thumb {
 	display: block;
 	width: calc(100% + 56px); /* 28px padding × 2 sides */
@@ -609,6 +610,18 @@ ul, ol { padding-left: 1.4em; }
 	aspect-ratio: 660 / 471;  /* natural image ratio — scales with card width */
 	object-fit: cover;
 	flex-shrink: 0;
+	transform: scale(1);
+	transform-origin: center center;
+	transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	will-change: transform;
+}
+
+/* LRM-185: zoom-in on card hover — scoped to pointer devices only so touch
+   devices never get a stuck zoomed state; overflow:hidden on the card clips it */
+@media (hover: hover) {
+	.vv-service-card:hover .vv-service-card__thumb {
+		transform: scale(1.07);
+	}
 }
 
 .vv-service-card__title {
